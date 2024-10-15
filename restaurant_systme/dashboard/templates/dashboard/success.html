@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Success</title>
+    <style>
+    
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('{% static "accounts/bg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header, .footer {
+            background-color: black;
+            padding: 10px 20px;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B554D;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #8B554D;
+        }
+
+        .main-content {
+            flex: 1;
+            position: relative;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-container {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+            width: 300px;
+            text-align: left;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .welcome-text {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: transparent;
+            color: white;
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+        }
+
+        .terms input {
+            margin-right: 5px;
+        }
+
+        .forgot-password a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #8B554D, #A06A61);
+            transition: transform 0.9s;
+            z-index: 0;
+            transform: translateX(-100%) scaleX(0);
+            border-radius: 5px;
+        }
+
+        .login-button:hover {
+            transform: scale(1.05);
+            background-color: black; /* Maintain background color on hover */
+        }
+
+        .login-button:hover::before {
+            transform: translateX(0) scaleX(0.2);
+        }
+
+        .signup-link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .signup-link a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>{% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DilaoRant - Restaurant Management System</title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: url('{% static "accounts/bg.jpg" %}') no-repeat center center fixed;
+                background-size: cover;
+                color: white;
+                display: flex;
+                flex-direction: column;
+            }
+    
+            .header, .footer {
+                background-color: black;
+                padding: 10px 20px;
+                z-index: 10;
+            }
+    
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+    
+            .logo {
+                font-size: 24px;
+                font-weight: bold;
+                color: #8B554D;
+            }
+    
+            .subtitle {
+                font-size: 14px;
+                color: #8B554D;
+            }
+    
+            .main-content {
+                flex: 1;
+                position: relative;
+            }
+    
+            .overlay {
+                background-color: rgba(0, 0, 0, 0.5);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+    
+            .login-container {
+                position: absolute;
+                top: 50%;
+                right: 10%;
+                transform: translateY(-50%);
+                width: 300px;
+                text-align: left;
+            }
+    
+            h2 {
+                margin-bottom: 5px;
+                font-size: 24px;
+            }
+    
+            .welcome-text {
+                margin-bottom: 20px;
+                font-size: 14px;
+                color: #ccc;
+            }
+    
+            .input-field {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+                background-color: transparent;
+                color: white;
+            }
+    
+            .checkbox-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                font-size: 12px;
+            }
+    
+            .terms {
+                display: flex;
+                align-items: center;
+            }
+    
+            .terms input {
+                margin-right: 5px;
+            }
+    
+            .forgot-password a {
+                color: white;
+                text-decoration: none;
+            }
+    
+            .login-button {
+                width: 100%;
+                padding: 10px;
+                background-color: black;
+                color: white;
+                border: none;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                transition: background-color 0.3s, transform 0.3s;
+                font-weight: bold;
+                border-radius: 5px;
+            }
+    
+            .login-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, #8B554D, #A06A61);
+                transition: transform 0.9s;
+                z-index: 0;
+                transform: translateX(-100%) scaleX(0);
+                border-radius: 5px;
+            }
+    
+            .login-button:hover {
+                transform: scale(1.05);
+                background-color: black; /* Maintain background color on hover */
+            }
+    
+            .login-button:hover::before {
+                transform: translateX(0) scaleX(0.2);
+            }
+    
+            .signup-link {
+                margin-top: 15px;
+                text-align: center;
+                font-size: 12px;
+            }
+    
+            .signup-link a {
+                color: white;
+                text-decoration: none;
+            }
+    
+            .footer {
+                text-align: center;
+                font-size: 12px;
+                color: #ccc;
+            }
+
+            .message {
+                padding: 4px;
+                margin-bottom: 15px;
+                border-radius: 5px;
+            }
+    
+            .message.error {
+               
+                color: red;
+                font-size: 9px;
+            }
+    
+            .message.success {
+             
+                color: green;
+                font-size: 9px;
+            }
+        </style>
+    </head><body>
+        <div class="header">
+            <div class="logo"><br>DilaoRant<br>
+                <div class="subtitle"><Br>Restaurant Management System<br><br><br></div>
+            </div>
+        </div>
+    
+        <div class="main-content">
+            <div class="overlay"></div>
+            <div class="login-container">
+                <h2>Welcome!</h2>
+                <div class="welcome-text"> <h1>Dashboard Area</h1>
+
+                    <p>
+                         <a href="{% url 'employeeSADD' %}">EmployeeSchedule</a>
+                    </p></div>
+              
+            </div>
+        </div>
+        <div class="footer">
+            © 2024 DilaoRant. All rights reserved.
+        </div>
+    </body>
+    
+    </html>
+    
+</html>

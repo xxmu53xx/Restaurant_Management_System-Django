@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Schedule</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('{% static "accounts/bg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header, .footer {
+            background-color: black;
+            padding: 10px 20px;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 48px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8B554D;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #8B554D;
+        }
+
+        .main-content {
+            flex: 1;
+            position: relative;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-container {
+            position: absolute;
+            top: 50%;
+            right: 35%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 470px;
+            text-align: left;
+            border: 2px solid rgba(132, 80, 68, 0.4);
+            border-radius: 8px;
+            padding: 10px;
+            background-color: rgba(132, 80, 68, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-size: 24px;
+            text-align: center; /* Center align title */
+        }
+
+        .welcome-text {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ccc;
+            text-align: center; /* Center align text */
+        }
+
+        .input-field {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: transparent;
+            color: white;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            margin-right:5px;
+            border-radius: 5px;
+        }
+        .view-all-button {
+            width: 100%;
+            text-decoration: none;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        a{
+            text-align:center;
+            font-size:12px;
+            font-weight:none;
+        }
+        .login-button::before, .view-all-button::before, {
+            width: 48%; /* Adjust as needed to fit both buttons */
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .login-button:hover {
+            transform: scale(1.05);
+            background-color: black; /* Maintain background color on hover */
+        }
+        .login-button::before {
+            background: linear-gradient(45deg, #8B554D, #A06A61);
+        }
+
+        .view-all-button::before {
+            background: linear-gradient(45deg, #000000, #333333);
+        }
+
+        .login-button:hover, .view-all-button:hover {
+            transform: scale(1.05);
+        }
+
+        .login-button:hover::before, .view-all-button:hover::before {
+            transform: translateX(0) scaleX(0.2);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #ccc;
+        }
+
+      
+        .message {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .message.error {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+
+        .message.success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">DilaoRant
+            <div class="subtitle">Restaurant Management System</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="overlay"></div>
+        <div class="login-container">
+            <h2>Add Schedule</h2>
+            <div class="welcome-text">Please enter details.</div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-field"> 
+                    <label for="employee_id">Employee ID:</label>
+                    {{ form.employee_id }} 
+                </div>
+                <div class="input-field">
+                    <label for="shift_date">Shift Date:</label>
+                    {{ form.shift_date }} 
+                </div>
+                <div class="input-field">
+                    <label for="shift_time">Shift Start Time:</label>
+                    {{ form.shift_time }}
+                </div>
+                <div class="input-field">
+                    <label for="end_time">Shift End Time:</label>
+                    {{ form.end_time }}  
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="login-button">Add Schedule</button>  
+                    <a href="{% url 'employeeSDisplay'%}" class="view-all-button">View All Schedules</a>
+                </div>
+
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </form>
+        
+         
+        </div>
+    </div>
+    <div class="footer">
+        © 2024 DilaoRant. All rights reserved.
+    </div>
+</body>
+</html>
