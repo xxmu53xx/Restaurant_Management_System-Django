@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DilaoRant - Restaurant Management System</title>
+    <title>DilaoRant RMS</title>
     <style>
         body, html {
             height: 100%;
             margin: 0;
-            font-family: 'Poppins';
+            font-family: 'Poppins', sans-serif;
             background: url('{% static "accounts/bg2.jpg" %}') no-repeat center center fixed;
             background-size: cover;
             color: white;
@@ -19,7 +19,7 @@
 
         .header, .footer {
             background-color: #222222;
-            padding: 10px 20px;
+            padding: 10px 150px;
             z-index: 10;
         }
 
@@ -43,15 +43,9 @@
 
         .logo-text {
             font-size: 28px;
-            font-family: 'Poppins';
+            font-family: 'Poppins', sans-serif;
             font-weight: bold;
             color: #ffffff;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: #ffffff;
-            margin-top: 5px; /* Adds space between header and subtitle */
         }
 
         .main-content {
@@ -78,9 +72,9 @@
         }
 
         h2 {
-            margin-bottom: 5px;
-            font-family: 'Poppins';
-            font-size: 24px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 30px;
             color: #ffffff;
         }
 
@@ -92,7 +86,7 @@
 
         .input-field {
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             margin-bottom: 15px;
             border: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
@@ -123,8 +117,8 @@
         }
 
         .login-button {
-            width: 100%;
-            padding: 10px;
+            width: 110%;
+            padding: 15px;
             background-color: #c63d3d;
             color: white;
             border: none;
@@ -159,10 +153,25 @@
             transform: translateX(0) scaleX(0.2);
         }
 
-        .signup-link {
-            margin-top: 15px;
+        .forgot-link {
+            margin-top: 10px;
+            margin-bottom: 10px;
             text-align: center;
-            font-size: 12px;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .forgot-link a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .signup-link {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 15px;
+            text-decoration: none;
         }
 
         .signup-link a {
@@ -171,6 +180,7 @@
         }
 
         .footer {
+            font-family: 'Poppins', sans-serif;
             text-align: center;
             font-size: 12px;
             color: #ccc;
@@ -184,12 +194,12 @@
 
         .message.error {
             color: red;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .message.success {
             color: green;
-            font-size: 9px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -205,13 +215,16 @@
 
     <div class="main-content">
         <div class="overlay"></div>
-        <div class="login-container">
+        <div class="login-container" style="text-align: center;">
             <h2>Welcome!</h2>
-            <div class="welcome-text">Please enter your details.</div>
+            <div class="welcome-text">Please enter your login details below</div>
             <form method="post">
                 {% csrf_token %}
                 <input type="text" name="username" placeholder="Username" class="input-field" required>
                 <input type="password" name="password" placeholder="Password" class="input-field" required>
+                <div class="forgot-link" style="text-align: left;">
+                    <a href="{% url 'forgot_password' %}"><u>Forgot Password?</u></a>
+                </div>
                 <div class="checkbox-container">
                     <div class="terms">
                         <!-- Checkbox and label for terms can go here if needed -->
@@ -229,9 +242,6 @@
                 </div>
                 {% endif %}
             </form>
-            <div class="signup-link" style="text-align: right;">
-                <a href="{% url 'forgot_password' %}"><u>Forgot Password?</u></a>
-            </div>
 
             <div class="signup-link">
                 Don't have an account? <a href="{% url 'signup' %}"><u><b>Sign up for free</b></u></a>
