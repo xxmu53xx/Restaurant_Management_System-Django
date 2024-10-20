@@ -134,6 +134,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
             transform: translateY(-3px); 
         }
+
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -142,52 +143,17 @@
     <div class="sidebar">
         <h2>DilaoRant RMS</h2>
         <div style="margin-top: 30px;">
-            <div class="selected">
-            <a href="#" class="menu-item">
+            <a href="{% url 'successdashboard' %}" class="menu-item">
                 <i class="fas fa-chart-line"></i>
                 Dashboard
             </a>
-            </div>
+            <div class="selected">
             <a href="#" class="menu-item">
-                <i class="fas fa-shopping-cart"></i>
+                <i class="fa-regular fa-calendar"></i>
                 Employee Schedule
             </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-cash-register"></i>
-                Sales
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-info-circle"></i>
-                Restaurant Info
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-list"></i>
-                Categories
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-balance-scale"></i>
-                Units
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-table"></i>
-                Tables
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-user-tie"></i>
-                Waiters
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-box"></i>
-                Products
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-cube"></i>
-                Materials
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-utensils"></i>
-                Recipes
-            </a>
+            </div>
+    
         </div>
     </div>
 
@@ -202,71 +168,11 @@
         </div>
 
         <div class="welcome-section">
-            <h1>Welcome to</h1>
-            <h2>DilaoRant RMS</h2>
+            
         </div>
 
         <div class="grid-container">
-            <div class="grid-item">
-                <i class="fas fa-users"></i>
-                <p>Users</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-utensils"></i>
-                <p>Restaurant Info</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-list"></i>
-                <p>Categories</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-balance-scale"></i>
-                <p>Units</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-box"></i>
-                <p>Products</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-cube"></i>
-                <p>Materials</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-users"></i>
-                <p>Customers</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-truck"></i>
-                <p>Suppliers</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-cash-register"></i>
-                <p>Sales</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-shopping-cart"></i>
-                <p>Purchases</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-chair"></i>
-                <p>Tables</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-user-tie"></i>
-                <p>Waiters</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-sliders-h"></i>
-                <p>Adjustments</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-book-open"></i>
-                <p>Recipes</p>
-            </div>
-            <div class="grid-item">
-                <i class="fas fa-chart-bar"></i>
-                <p>Reports</p>
-            </div>
+           
         </div>
     </div>
 </body>
