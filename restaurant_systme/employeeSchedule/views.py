@@ -28,3 +28,10 @@ def add_schedule(request):
 def display_schedule(request):
     schedules = EmSchedule.objects.all().order_by('employee_id')
     return render(request, 'employeeSchedule/eSPrint.html', {'schedules': schedules})
+
+def display_schedulev2(request):
+    schedules = EmSchedule.objects.all().order_by('employee_id')
+    return render(request, 'employeeSchedule/EsDisplay.html', {'schedules': schedules})
+
+def redirect_dashboard(request):
+    return redirect('successdashboard')
