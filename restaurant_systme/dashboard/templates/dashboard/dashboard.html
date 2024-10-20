@@ -127,6 +127,13 @@
         .menu-item i {
             margin-right: 10px;
         }
+        .selected {
+            background-color: #e63946;  
+            color: white;           
+            border: 2px solid #f1faee;  
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+            transform: translateY(-3px); 
+        }
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -135,13 +142,15 @@
     <div class="sidebar">
         <h2>DilaoRant RMS</h2>
         <div style="margin-top: 30px;">
+            <div class="selected">
             <a href="#" class="menu-item">
                 <i class="fas fa-chart-line"></i>
-                Dashboards
+                Dashboard
             </a>
+            </div>
             <a href="#" class="menu-item">
                 <i class="fas fa-shopping-cart"></i>
-                Purchases
+                Employee Schedule
             </a>
             <a href="#" class="menu-item">
                 <i class="fas fa-cash-register"></i>
@@ -184,7 +193,7 @@
 
     <div class="main-content">
         <div class="top-bar">
-            <input type="text" class="search-bar" placeholder="Enter token no">
+            <input type="text" class="search-bar" placeholder="Search">
             <div class="user-profile">
                 <span class="notification">3</span>
                 <span>Admin</span>
