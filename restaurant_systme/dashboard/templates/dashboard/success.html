@@ -154,21 +154,25 @@
                 Employee Schedule
             </a>    </div>
            
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayUser'%}" class="menu-item">
                 <i class="fa-regular fa-user"></i>
                 User
             </a>   
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayReservation'%}" class="menu-item">
                 <i class="fa-solid fa-calendar-check"></i>
                 Reservation
             </a>
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayPayment' %}" class="menu-item">
                 <i class="fa-regular fa-credit-card"></i>
                 Payment
             </a>   
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayMenu' %}" class="menu-item">
                 <i class="fa-solid fa-folder-open"></i>
                 Menu
+            </a> 
+            <a href="{% url 'DisplayOrder' %}" class="menu-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Order
             </a> 
         </div>
     </div>
@@ -177,9 +181,9 @@
         <div class="top-bar">
             <input type="text" class="search-bar" placeholder="Search">
             <div class="user-profile">
-                <span class="notification">3</span>
-                <span>Admin</span>
-                <img src="{% static 'path_to_admin_avatar.jpg' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
+                <span class="notification">0</span>
+                <span>Odilao</span>
+                <img src="{% static 'dashboard/bg3.png' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
             </div>
         </div>
 
@@ -256,5 +260,3 @@
     </div>
 </body>
 </html>
-=======
->>>>>>> 6fe6bea878f9fe556c9b02759556e09615e5e2d3

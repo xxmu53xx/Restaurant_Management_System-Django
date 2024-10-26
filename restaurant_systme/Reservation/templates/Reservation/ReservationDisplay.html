@@ -282,28 +282,32 @@
                 <i class="fas fa-chart-line"></i>
                 Dashboard
             </a>
-            <div class="selected">
-            <a href="#" class="menu-item">
+            
+            <a href="{% url 'Display' %}" class="menu-item">
                 <i class="fa-regular fa-calendar"></i>
                 Employee Schedule
-            </a>
-            </div>
+            </a>   
            
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayUser'%}" class="menu-item">
                 <i class="fa-regular fa-user"></i>
                 User
             </a>   
-            <a href="#" class="menu-item">
+            <div class="selected">
+            <a href="{% url 'DisplayReservation'%}" class="menu-item">
                 <i class="fa-solid fa-calendar-check"></i>
                 Reservation
-            </a>
-            <a href="#" class="menu-item">
+            </a></div>
+            <a href="{% url 'DisplayPayment' %}" class="menu-item">
                 <i class="fa-regular fa-credit-card"></i>
                 Payment
             </a>   
-            <a href="#" class="menu-item">
+            <a href="{% url 'DisplayMenu' %}" class="menu-item">
                 <i class="fa-solid fa-folder-open"></i>
                 Menu
+            </a> 
+            <a href="{% url 'DisplayOrder' %}" class="menu-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Order
             </a> 
     
         </div>
@@ -313,9 +317,12 @@
         <div class="top-bar" style=" margin-left: 150px;">
             <input type="text" class="search-bar" placeholder="Search">
             <div class="user-profile">
-                <span class="notification">3</span>
-                <span>Admin</span>
-                <img src="{% static 'path_to_admin_avatar.jpg' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
+                <span class="notification">0</span>
+                <span>Odilao</span>
+                <img src="{% static 'dashboard/bg3.png' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
+            
+            
+            
             </div>
         </div>
         <!--Enter functionality here-->
