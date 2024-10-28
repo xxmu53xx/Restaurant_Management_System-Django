@@ -325,10 +325,12 @@
         <div class="main-content">
         
           
-                <div class="schedule-header">
-                    <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;Employee Schedule</h2>
-                    <button class="add-schedule-btn" onclick="showPopup()">+ Add Schedule</button>
-                </div>  <div class="schedule-container">
+            <div class="schedule-container">
+                <div class="schedule-container">
+                    <div class="schedule-header">
+                        <h2 class="schedule-title">Employee Schedule</h2>
+                        <button class="add-schedule-btn" onclick="showAddPopup()">+ Add Schedule</button>
+                    </div>
                 <table class="schedule-table">
                     <thead>
                         <tr>
@@ -336,6 +338,7 @@
                             <th>Shift Date</th>
                             <th>Start Time</th>
                             <th>End Time</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -345,22 +348,26 @@
                             <td>{{ schedule.shift_date }}</td>
                             <td>{{ schedule.shift_time }}</td>
                             <td>{{ schedule.end_time }}</td>
+                            <td>
+                                <button onclick="update_schedule('{{ schedule.schedule_id }}')">Edit</button>
+                                <button onclick="delete_schedule('{{ schedule.schedule_id}}')">Delete</button>
+                            </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="4" style="text-align: center;">No schedules found.</td>
+                            <td colspan="5" style="text-align: center;">No schedules found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="overlay" id="overlay"></div>
+    
+            <div class="overlay" id="overlay"></div>
         <div class="popup-container" id="popupContainer">
-            <h2>Add Schedule</h2>
-            <form id="addScheduleForm">
+            <h2 id="popupTitle">Add Schedule</h2>
+            <form id="scheduleForm" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="schedule_id" id="id_schedule_id">
                 <div class="input-field">
                     <label for="id_employee_id">Employee ID:</label>
                     <input type="text" name="employee_id" id="id_employee_id" required>
@@ -378,61 +385,139 @@
                     <input type="time" name="end_time" id="id_end_time" required>
                 </div>
                 <div class="button-container">
-                    <button type="submit" class="add-button">Add Schedule</button>
+                    <button type="submit" class="add-button" id="submitButton">Save Schedule</button>
                     <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
                 </div>
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="message {{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
                 <div id="messages" class="messages"></div>
             </form>
-            
         </div>
+
     
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            function showPopup() {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('popupContainer').style.display = 'block';
-            }
+            <!-- JavaScript Code -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                const csrftoken = '{{ csrf_token }}';
+                let isEditing = false;
+                let currentScheduleId = null;
     
-            function hidePopup() {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('popupContainer').style.display = 'none';
-                document.getElementById('addScheduleForm').reset();
-                document.getElementById('messages').innerHTML = '';
-            }
+                function showAddPopup() {
+                    isEditing = false;
+                    currentScheduleId = null;
+                    document.getElementById('popupTitle').innerText = 'Add Schedule';
+                    document.getElementById('scheduleForm').reset();
+                    document.getElementById('id_schedule_id').value = '';
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('popupContainer').style.display = 'block';
+                    document.getElementById('messages').innerHTML = '';
+                }
     
-            // Close popup when clicking outside
-            document.getElementById('overlay').addEventListener('click', hidePopup);
+                function showEditPopup() {
+                    isEditing = true;
+                    document.getElementById('popupTitle').innerText = 'Edit Schedule';
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('popupContainer').style.display = 'block';
+                    document.getElementById('messages').innerHTML = '';
+                }
     
-            // Handle form submission
-            $('#addScheduleForm').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "add_schedule" %}',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log(response); // Check what the response actually contains
-                        if (response.success) {
-                            $('#messages').html('<div class="message success">' + response.message + '</div>');
-                        } else {
-                            $('#messages').html('<div class="message error">' + bruh + '</div>');
+                function hidePopup() {
+                    document.getElementById('overlay').style.display = 'none';
+                    document.getElementById('popupContainer').style.display = 'none';
+                    document.getElementById('scheduleForm').reset();
+                    document.getElementById('messages').innerHTML = '';
+                    isEditing = false;
+                    currentScheduleId = null;
+                }
+    
+                function update_schedule(schedule_id) {
+                    console.log("Edit clicked for schedule ID:", schedule_id);
+                    currentScheduleId = schedule_id;  // Store the schedule ID
+                
+                    $.ajax({
+                        url: "{% url 'get_schedule' 999999 %}".replace('999999', schedule_id),
+                        type: 'GET',
+                        headers: {
+                            'X-CSRFToken': csrftoken  // Replace 'csrftoken' with the appropriate token variable if it's named differently
+                        },
+                        success: function(data) {
+                            // Populate form fields with the data retrieved from the server
+                            document.getElementById('id_employee_id').value = data.employee_id;
+                            document.getElementById('id_shift_date').value = data.shift_date;
+                            document.getElementById('id_shift_time').value = data.shift_time;
+                            document.getElementById('id_end_time').value = data.end_time;
+                
+                            // Show the edit popup
+                            showEditPopup();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching schedule:', error);
+                            alert('Error fetching schedule details. Please try again.');
                         }
-                    },
-                    error: function() {
-                        $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+                    });
+                }
+    
+                $('#scheduleForm').on('submit', function(e) {
+                    e.preventDefault();
+                    const formData = $(this).serialize(); // Collect form data
+                    
+                    let url;
+                    if (isEditing && currentScheduleId) {
+                        url = "{% url 'update_schedule' 999999 %}".replace('999999', currentScheduleId); // URL for updating
+                    } else {
+                        url = "{% url 'add_schedule' %}"; // URL for adding a new schedule
                     }
+                
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken  // Ensure the CSRF token is sent correctly
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Display success message
+                                $('#messages').html('<div class="message success">' + response.message + '</div>');
+                                
+                                // Close popup and refresh after a short delay
+                                setTimeout(() => {
+                                    hidePopup();
+                                    location.reload(); // Refresh page to show updated schedule
+                                }, 1000);
+                            } else {
+                                // Display error message returned by the server
+                                $('#messages').html('<div class="message error">' + (response.message || 'An error occurred.') + '</div>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Form submission error:', error);
+                            // Display a general error message if an error occurs
+                            $('#messages').html('<div class="message error">Error: ' + (xhr.responseJSON?.message || 'An error occurred. Please try again.') + '</div>');
+                        }
+                    });
                 });
-            });
-        </script>
+                function delete_schedule(schedule_id) {
+                    if (confirm('Are you sure you want to delete this schedule?')) {
+                        $.ajax({
+                            url: "{% url 'delete_schedule' 999999 %}".replace('999999', schedule_id),
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRFToken': csrftoken
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    location.reload();
+                                } else {
+                                    alert('Error deleting schedule: ' + response.message);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error deleting schedule:', error);
+                                alert('Error deleting schedule. Please try again.');
+                            }
+                        });
+                    }
+                }
+            </script>
     </div>
 </body>
 </html>
