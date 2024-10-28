@@ -362,39 +362,7 @@
         <div class="overlay" id="overlay"></div>
         <div class="popup-container" id="popupContainer">
             <h2>Add Schedule</h2>
-            <form id="addScheduleForm">
-                {% csrf_token %}
-                <div class="input-field">
-                    <label for="id_employee_id">Employee ID:</label>
-                    <input type="text" name="employee_id" id="id_employee_id" required>
-                </div>
-                <div class="input-field">
-                    <label for="id_shift_date">Shift Date:</label>
-                    <input type="date" name="shift_date" id="id_shift_date" required>
-                </div>
-                <div class="input-field">
-                    <label for="id_shift_time">Shift Start Time:</label>
-                    <input type="time" name="shift_time" id="id_shift_time" required>
-                </div>
-                <div class="input-field">
-                    <label for="id_end_time">Shift End Time:</label>
-                    <input type="time" name="end_time" id="id_end_time" required>
-                </div>
-                <div class="button-container">
-                    <button type="submit" class="add-button">Add Schedule</button>
-                    <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
-                </div>
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="message {{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <div id="messages" class="messages"></div>
-            </form>
+            
             
         </div>
     
