@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from employeeSchedule.forms import ScheduleForm
 from employeeSchedule.models import EmSchedule 
 
+
+
 @require_http_methods(["GET", "POST"])
 def add_schedule(request):
     if request.method == 'POST':
@@ -35,7 +37,7 @@ def get_schedule(request, schedule_id):
             'shift_date': schedule.shift_date,
             'shift_time': schedule.shift_time,
             'end_time': schedule.end_time,
-        }
+        }   
         return JsonResponse(data)
     except EmSchedule.DoesNotExist:
         return Http404("Schedule not found")
