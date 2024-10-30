@@ -332,78 +332,96 @@
                 <div class="schedule-header">
                     <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;Reservation</h2>
                     <button class="add-schedule-btn" onclick="showPopup()">+ Add Reservation</button>
-                </div>  <div class="schedule-container">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Shift Date</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for schedule in schedules %}
-                        <tr>
-                            <td>{{ schedule.employee_id }}</td>
-                            <td>{{ schedule.shift_date }}</td>
-                            <td>{{ schedule.shift_time }}</td>
-                            <td>{{ schedule.end_time }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" style="text-align: center;">No schedules found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                </div>  
+                
+                <div class="schedule-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Reservation ID</th>
+                                <th>Reservation Date</th>
+                                <th>Number of People</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.reservation_id }}</td>
+                                <td>{{ reservation.reservation_date }}</td>
+                                <td>{{ reservation.number_of_people }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No reservations found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
         </div>
 
         <div class="overlay" id="overlay"></div>
-        <div class="popup-container" id="popupContainer">
-            <h2>Add Schedule</h2>
-           
-            
+<div class="popup-container" id="popupContainer">
+    <h2>Add Reservation</h2>
+    <form id="addScheduleForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button-container">
+            <button type="submit" class="add-button">Add Reservation</button>
+            <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
         </div>
-    
+    </form>
+</div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             function showPopup() {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('popupContainer').style.display = 'block';
-            }
-    
-            function hidePopup() {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('popupContainer').style.display = 'none';
-                document.getElementById('addScheduleForm').reset();
-                document.getElementById('messages').innerHTML = '';
-            }
-    
-            // Close popup when clicking outside
-            document.getElementById('overlay').addEventListener('click', hidePopup);
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popupContainer').style.display = 'block';
+}
+
+function hidePopup() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('popupContainer').style.display = 'none';
+    document.getElementById('addScheduleForm').reset();
+    document.getElementById('messages').innerHTML = '';
+}
+
+document.getElementById('overlay').addEventListener('click', hidePopup);
+
     
             // Handle form submission
-            $('#addScheduleForm').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "add_schedule" %}',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log(response); // Check what the response actually contains
-                        if (response.success) {
-                            $('#messages').html('<div class="message success">' + response.message + '</div>');
-                        } else {
-                            $('#messages').html('<div class="message error">' + bruh + '</div>');
-                        }
-                    },
-                    error: function() {
-                        $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
-                    }
-                });
-            });
+            // Handle form submission
+$('#addScheduleForm').on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url "displayReservation" %}',  // Ensure this URL matches your Django URL pattern
+        data: $(this).serialize(),
+        success: function(response) {
+            console.log(response); // Check what the response actually contains
+            if (response.success) {
+                // Append the new reservation to the table
+                $('.schedule-table tbody').append(`
+                    <tr>
+                        <td>${response.reservation.reservation_id}</td>
+                        <td>${response.reservation.reservation_date}</td>
+                        <td>${response.reservation.number_of_people}</td>
+                    </tr>
+                `);
+                $('#messages').html('<div class="message success">' + response.message + '</div>');
+                hidePopup(); // Close the popup after successful submission
+            } else {
+                $('#messages').html('<div class="message error">' + response.message + '</div>');
+            }
+        },
+        error: function() {
+            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+        }
+    });
+});
+
+
         </script>
     </div>
 </body>

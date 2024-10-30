@@ -26,9 +26,6 @@ def add_schedule(request):
     
     return render(request, 'employeeSchedule/employeeSchedule.html', {'form': form})
 
-<<<<<<< HEAD
-
-=======
 @require_http_methods(["GET"])
 def get_schedule(request, schedule_id):
     try:
@@ -77,7 +74,6 @@ def delete_schedule(request, schedule_id):
             return JsonResponse({'error': 'Schedule not found.'}, status=404)
     else:
         return HttpResponseNotAllowed(['DELETE'])
->>>>>>> bc27ec3ddba44096803079dad4733fa108099439
 def display_schedule(request):
     schedules = EmSchedule.objects.all().order_by('employee_id')
     return render(request, 'employeeSchedule/eSPrint.html', {'schedules': schedules})
