@@ -309,7 +309,10 @@
                 <i class="fa-solid fa-cart-shopping"></i>
                 Order
             </a> 
-    
+            <a href="{% url 'logout' %}" class="menu-item">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Logout
+            </a>
         </div>
     </div>
 
@@ -338,9 +341,10 @@
                 <table class="schedule-table">
                     <thead>
                         <tr>
-                            <th>Payment ID</th>
-                            <th>Payment Method</th>
+                            <th>Order ID</th>
                             <th>Payment Date</th>
+                            <th>Amount</th>
+                            <th>Payment Method</th>
                         </tr>
                     </thead>
                     <tbody>

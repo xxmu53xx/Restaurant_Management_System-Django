@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('success/',views.success_viewer,name='successdashboard'),
     path('display/',views.redirect_eS,name='Display'),

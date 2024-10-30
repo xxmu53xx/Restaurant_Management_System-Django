@@ -4,6 +4,8 @@ from .models import Order
 
 # Create your views here.
 
+from django.contrib.auth.decorators import login_required
+@login_required(login_url='login')
 def display_Order(request):
     orders = Order.objects.all()
     return render(request, 'Order/OrderDisplay.html', {'orders': orders})

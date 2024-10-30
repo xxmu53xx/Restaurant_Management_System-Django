@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from .models import Menu
+
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-
-
+@login_required(login_url='login')
 def display_Menu(request):
     menus = Menu.objects.all()  # Fetch all menu items from the database
     return render(request, 'Menu/MenuDisplay.html', {'menus': menus})

@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Payment
 
+from django.contrib.auth.decorators import login_required
+@login_required(login_url='login')
 def display_Payment(request):
     payments = Payment.objects.all()  # Fetch all payments to display
     return render(request, 'Payment/PaymentDisplay.html', {'payments': payments})
