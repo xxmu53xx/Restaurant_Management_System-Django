@@ -9,8 +9,9 @@ from django.shortcuts import render, redirect
 from employeeSchedule.forms import ScheduleForm
 from employeeSchedule.models import EmSchedule 
 
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
 def add_schedule(request):
     if request.method == 'POST':
@@ -27,7 +28,7 @@ def add_schedule(request):
         form = ScheduleForm()
     
     return render(request, 'employeeSchedule/employeeSchedule.html', {'form': form})
-
+@login_required(login_url='login')
 @require_http_methods(["GET"])
 def get_schedule(request, schedule_id):
     try:
@@ -43,7 +44,7 @@ def get_schedule(request, schedule_id):
         return Http404("Schedule not found")
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
+@login_required(login_url='login')
 @csrf_exempt
 def update_schedule(request, schedule_id):
     if request.method == 'POST':
@@ -79,7 +80,7 @@ def delete_schedule(request, schedule_id):
 def display_schedule(request):
     schedules = EmSchedule.objects.all().order_by('employee_id')
     return render(request, 'employeeSchedule/eSPrint.html', {'schedules': schedules})
-
+@login_required(login_url='login')
 def display_schedulev2(request):
     schedules = EmSchedule.objects.all().order_by('employee_id')
     return render(request, 'employeeSchedule/EsDisplay.html', {'schedules': schedules})

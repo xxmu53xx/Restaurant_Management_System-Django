@@ -60,6 +60,7 @@ MIDDLEWARE = [
     
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+      'restaurant_systme.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'restaurant_systme.urls'

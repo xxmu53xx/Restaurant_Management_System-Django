@@ -6,11 +6,12 @@ from restaurant_systme import settings
 from django.shortcuts import redirect
 
 # Create your views here
+@login_required(login_url='login')  # Redirect to the 'login' URL if not authenticated
 def success_viewer(request):
-    return redirect('successdashboard')
+    return render(request, 'dashboard/success.html')
 
 def redirect_eS(request):
-       return redirect('display') 
+    return redirect('display') 
    
 def redirect_Order(request):
     return redirect('displayOrder')
