@@ -334,27 +334,27 @@
                 <div class="schedule-header">
                     <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;User</h2>
                     <button class="add-schedule-btn" onclick="showPopup()">+ Add User</button>
-                </div>  <div class="schedule-container">
+                </div>  
+                
+                <div class="schedule-container">
                 <table class="schedule-table">
                     <thead>
                         <tr>
-                            <th>Employee ID</th>
-                            <th>Shift Date</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Role</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for schedule in schedules %}
+                        {% for user in users %}
                         <tr>
-                            <td>{{ schedu   le.employee_id }}</td>
-                            <td>{{ schedule.shift_date }}</td>
-                            <td>{{ schedule.shift_time }}</td>
-                            <td>{{ schedule.end_time }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.password }}</td>
+                            <td>{{ user.role }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="4" style="text-align: center;">No schedules found.</td>
+                            <td colspan="3" style="text-align: center;">No users found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -362,50 +362,78 @@
             </div>
         </div>
 
-        <div class="overlay" id="overlay"></div>
-        <div class="popup-container" id="popupContainer">
-            <h2>Add Schedule</h2>
-         
-        </div>
+        <div class="overlay" id="overlay" style="display: none;"></div>
+    <div class="popup-container" id="popupContainer" style="display: none;">
+        <h2>Add User</h2>
+        <form id="addUserForm" method="POST">
+            {% csrf_token %}
+            <div class="input-field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div class="input-field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="input-field">
+                <label for="role">Role</label>
+                <input type="text" name="role" id="role" required>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="add-button">Add User</button>
+                <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
+            </div>
+        </form>
+        <div id="messages"></div>
+    </div>
     
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
+            // Function to show the popup
             function showPopup() {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('popupContainer').style.display = 'block';
+                document.getElementById("overlay").style.display = "block";
+                document.getElementById("popupContainer").style.display = "block";
             }
     
+            // Function to hide the popup
             function hidePopup() {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('popupContainer').style.display = 'none';
-                document.getElementById('addScheduleForm').reset();
-                document.getElementById('messages').innerHTML = '';
+                document.getElementById("overlay").style.display = "none";
+                document.getElementById("popupContainer").style.display = "none";
+                $('#messages').empty();
             }
     
-            // Close popup when clicking outside
-            document.getElementById('overlay').addEventListener('click', hidePopup);
-    
-            // Handle form submission
-            $('#addScheduleForm').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "add_schedule" %}',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log(response); // Check what the response actually contains
-                        if (response.success) {
-                            $('#messages').html('<div class="message success">' + response.message + '</div>');
-                        } else {
-                            $('#messages').html('<div class="message error">' + bruh + '</div>');
-                        }
-                    },
-                    error: function() {
-                        $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
-                    }
-                });
-            });
+            // AJAX form submission
+            $('#addUserForm').on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url "add_user" %}',  // Adjust URL to your URL pattern
+        data: $(this).serialize(),
+        success: function(response) {
+            if (response.success) {
+                $('#messages').html('<div class="message success">' + response.message + '</div>');
+                
+                // Append new user to the table
+                let newRow = `
+                    <tr>
+                        <td>${response.user.username}</td>
+                        <td>${response.user.password}</td>
+                        <td>${response.user.role}</td>
+                    </tr>
+                `;
+                $('.schedule-table tbody').append(newRow);
+                hidePopup();
+            } else {
+                $('#messages').html('<div class="message error">' + response.message + '</div>');
+            }
+        },
+        error: function() {
+            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+        }
+    });
+});
+
         </script>
-    </div>
-</body>
-</html>
+        
+    </body>
+    </html>

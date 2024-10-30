@@ -335,31 +335,33 @@
                 <div class="schedule-header">
                     <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;Reservation</h2>
                     <button class="add-schedule-btn" onclick="showPopup()">+ Add Reservation</button>
-                </div>  <div class="schedule-container">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Reservation Date</th>
-                            <th>Number Of People</th>
-                            <th>User ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for schedule in schedules %}
-                        <tr>
-                            <td>{{ schedule.employee_id }}</td>
-                            <td>{{ schedule.shift_date }}</td>
-                            <td>{{ schedule.shift_time }}</td>
-                            <td>{{ schedule.end_time }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" style="text-align: center;">No schedules found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                </div>  
+                
+                <div class="schedule-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Reservation ID</th>
+                                <th>Reservation Date</th>
+                                <th>Number of People</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.reservation_id }}</td>
+                                <td>{{ reservation.reservation_date }}</td>
+                                <td>{{ reservation.number_of_people }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No reservations found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
         </div>
 
         <div class="overlay" id="overlay"></div>

@@ -335,32 +335,33 @@
                 <div class="schedule-header">
                     <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;Menu</h2>
                     <button class="add-schedule-btn" onclick="showPopup()">+ Add Menu</button>
-                </div>  <div class="schedule-container">
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Availability</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for schedule in schedules %}
-                        <tr>
-                            <td>{{ schedule.employee_id }}</td>
-                            <td>{{ schedule.shift_date }}</td>
-                            <td>{{ schedule.shift_time }}</td>
-                            <td>{{ schedule.end_time }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" style="text-align: center;">No schedules found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                </div>  
+                
+                <div class="schedule-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Menu Item Name</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for menu in menus %}
+                            <tr>
+                                <td>{{ menu.name }}</td>
+                                <td>${{ menu.price }}</td>
+                                <td>{{ menu.description }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No menu items found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
         </div>
 
         <div class="overlay" id="overlay"></div>
