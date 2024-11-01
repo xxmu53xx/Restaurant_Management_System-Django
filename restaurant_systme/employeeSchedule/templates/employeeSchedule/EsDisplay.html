@@ -271,7 +271,11 @@
             color: white;
         }
 
-        
+ 
+        .btn-edit {
+            background-color: #0e8225;
+            color: white;
+        }
     .btn-edit:hover {
         background-color: #45a049;
         transform: translateY(-1px);
@@ -294,6 +298,7 @@
         transform: translateY(1px);
         box-shadow: none;
     }
+
 
     </style>
   
@@ -362,6 +367,7 @@
                 <table class="schedule-table">
                     <thead>
                         <tr>
+                            <th>Schedule ID</th>
                             <th>Employee ID</th>
                             <th>Shift Date</th>
                             <th>Start Time</th>
@@ -372,6 +378,7 @@
                     <tbody>
                         {% for schedule in schedules %}
                         <tr>
+                            <td>{{schedule.schedule_id }}</td>
                             <td>{{ schedule.employee_id }}</td>
                             <td>{{ schedule.shift_date }}</td>
                             <td>{{ schedule.shift_time }}</td>

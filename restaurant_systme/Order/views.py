@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Order
-
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 from django.contrib.auth.decorators import login_required
@@ -33,3 +35,28 @@ def add_order(request):
         return JsonResponse({'success': True})
 
     return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+
+
+@login_required(login_url='login')
+@require_http_methods(["DELETE"])
+def delete_order(request, order_id):
+    try:
+        order = get_object_or_404(Order, order_id=order_id)
+        order.delete()
+        return JsonResponse({
+            'success': True,
+            'message': 'Menu deleted successfully!'
+        })
+    except Order.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Menu not found.'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
+
+

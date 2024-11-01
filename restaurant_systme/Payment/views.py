@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Payment
-
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 @login_required(login_url='login')
 def display_Payment(request):
@@ -25,3 +28,24 @@ def add_payment(request):
         return JsonResponse({'success': True, 'message': 'Payment added successfully!'})
 
     return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+@login_required(login_url='login')
+@require_http_methods(["DELETE"])
+def delete_payment(request, payment_id):
+    try:
+        payment = get_object_or_404(Payment, payment_id=payment_id)
+        payment.delete()
+        return JsonResponse({
+            'success': True,
+            'message': 'a reservation list deleted successfully!'
+        })
+    except Payment.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'reservation not found.'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)

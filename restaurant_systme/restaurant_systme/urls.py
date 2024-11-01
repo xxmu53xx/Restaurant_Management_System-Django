@@ -26,6 +26,6 @@ urlpatterns = [
     path('dashboard/Order/',include("Order.urls")),
     path('dashboard/Reservation/',include("Reservation.urls")),
     path('dashboard/User/',include("User.urls")),
-    path('dashboard/Payment',include("Payment.urls")),
-    path('dashboard/Menu',include("Menu.urls"))
+    path('dashboard/Payment/',include("Payment.urls")),
+    path('dashboard/Menu/',include("Menu.urls"))
 ]
