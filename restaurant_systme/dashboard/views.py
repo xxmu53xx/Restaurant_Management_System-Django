@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 # Create your views here
 @login_required(login_url='login')  # Redirect to the 'login' URL if not authenticated
 def success_viewer(request):
-    return render(request, 'dashboard/success.html')
+    return render(request, 'dashboard/success.html' , {'user': request.user})
 
 def redirect_eS(request):
     return redirect('display') 
