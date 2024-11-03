@@ -1,16 +1,19 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Management</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
@@ -24,8 +27,27 @@
             padding: 20px;
         }
 
+        .logo {
+            align-items: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            /* Ensures margin auto works */
+        }
+
+        .logo-text {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
         .main-content {
-            margin-left: 120px;
+            margin-left: 250px;
             padding: 20px;
             background-color: #f4f5f9;
             min-height: 100vh;
@@ -53,38 +75,6 @@
         .welcome-section h2 {
             color: #e63946;
             font-size: 2em;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .grid-item {
-            background-color: #e6e6e6;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .grid-item:hover {
-            transform: translateY(-5px);
-            background-color: #f8f8f8;
-        }
-
-        .grid-item i {
-            font-size: 2em;
-            color: #e63946;
-            margin-bottom: 10px;
-        }
-
-        .grid-item p {
-            color: #333;
-            font-weight: bold;
         }
 
         .search-bar {
@@ -126,20 +116,75 @@
         .menu-item i {
             margin-right: 10px;
         }
+
         .selected {
-            background-color: #e63946;  
-            color: white;           
-            border: 2px solid #f1faee;  
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            transform: translateY(-3px); 
+            background-color: #e63946;
+            border-radius: 4px;
         }
+
+        .account-section {
+            position: relative;
+            margin-top: 250px;
+            cursor: pointer;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .account-info img {
+            width: 55px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .account-info span {
+            font-size: 16px;
+            color: #f1faee;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: -80px;
+            left: 0;
+            background-color: #444;
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+        .dropdown i {
+            margin-right: 8px;
+        }
+
+        .account-section:hover .dropdown {
+            display: block;
+        }
+
         .schedule-container {
             background-color: white;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 1000px; /* Limit the width of the container */
-            margin: 0 auto; /* Center the container */
+            margin-left: -250px;
         }
 
         .schedule-header {
@@ -153,21 +198,25 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
+            margin: 0 auto;
         }
 
         .add-schedule-btn {
             background-color: #e63946;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
         }
 
+        .add-schedule-btn i {
+            margin-right: 5px;
+        }
+
         .schedule-table {
             width: 100%;
-            border-collapse: collapse;
         }
 
         .schedule-table th, .schedule-table td {
@@ -185,6 +234,7 @@
         .schedule-table tr:hover {
             background-color: #f9f9f9;
         }
+
         .overlay {
             display: none;
             position: fixed;
@@ -226,7 +276,6 @@
 
         .input-field {
             margin-bottom: 20px;
-            
         }
 
         .input-field label {
@@ -258,7 +307,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            width: 48%;
+            width: 50%;
         }
 
         .add-button {
@@ -270,56 +319,67 @@
             background-color: #333;
             color: white;
         }
-        
+
         .btn-edit {
             background-color: #0e8225;
             color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
         }
-    .btn-edit:hover {
-        background-color: #45a049;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0);
-    }
 
-    .btn-delete {
-        background-color: #e63946;
-        color: white;
-    }
+        .btn-edit:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
 
-    .btn-delete:hover {
-        background-color: #d32f2f;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0);
-    }
+        .btn-delete {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
 
-    /* Animation for button click */
-    .btn:active {
-        transform: translateY(1px);
-        box-shadow: none;
-    }
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            transform: translateY(-1px);
+        }
 
+        /* Animation for button click */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="sidebar">
-        <h2>DilaoRant RMS</h2>
+        <div class="logo">
+            <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            <div class="logo-text">
+                DilaoRant RMS
+            </div>
+        </div>
         <div style="margin-top: 30px;">
-            <a href="{% url 'successdashboard' %}" class="menu-item">
+            <a href="{% url 'HomeDashboard' %}" class="menu-item">
                 <i class="fas fa-chart-line"></i>
                 Dashboard
             </a>
-           
+
             <a href="{% url 'Display' %}" class="menu-item">
                 <i class="fa-regular fa-calendar"></i>
                 Employee Schedule
-            </a>    
-           <div class="selected">
-            <a href="{% url 'DisplayUser'%}" class="menu-item">
-                <i class="fa-regular fa-user"></i>
-                User
-            </a>   </div>
+            </a>
+            <div class="selected">
+                <a href="{% url 'DisplayUser'%}" class="menu-item">
+                    <i class="fa-regular fa-user"></i>
+                    User
+                </a>
+            </div>
             <a href="{% url 'DisplayReservation'%}" class="menu-item">
                 <i class="fa-solid fa-calendar-check"></i>
                 Reservation
@@ -327,44 +387,48 @@
             <a href="{% url 'DisplayPayment' %}" class="menu-item">
                 <i class="fa-regular fa-credit-card"></i>
                 Payment
-            </a>   
+            </a>
             <a href="{% url 'DisplayMenu' %}" class="menu-item">
                 <i class="fa-solid fa-folder-open"></i>
                 Menu
-            </a> 
+            </a>
             <a href="{% url 'DisplayOrder' %}" class="menu-item">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Order
-            </a> 
-            <a href="{% url 'logout' %}" class="menu-item">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                Logout
             </a>
+
+            <div class="account-section">
+                <div class="account-info">
+                    <img src="{% static 'User/user.jpg' %}" alt="User">
+                    <span>{{ user.username }}</span>
+                </div>
+                <div class="dropdown">
+                    <a href="">
+                        <i class="fa-regular fa-user"></i> User Profile
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="top-bar" style=" margin-left: 150px;">
+        <div class="top-bar">
             <input type="text" class="search-bar" placeholder="Search">
-            <div class="user-profile">
-                <span class="notification">0</span>
-                <span>Odilao</span>
-                <img src="{% static 'dashboard/bg3.png' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
-            
-            
-            
-            </div>
         </div>
         <!--Enter functionality here-->
         <div class="main-content">
-        
-          
+
+            <div class="schedule-container">
                 <div class="schedule-header">
-                    <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;User</h2>
-                    <button class="add-schedule-btn" onclick="showPopup()">+ Add User</button>
-                </div>  
-                
-                <div class="schedule-container">
+                    <h2 class="schedule-title">User</h2>
+                    <button class="add-schedule-btn" onclick="showPopup()"><i class="fas fa-plus"></i>
+                        Add User
+                    </button>
+                </div>
+
                 <table class="schedule-table">
                     <thead>
                         <tr>
@@ -373,7 +437,7 @@
                             <th>Password</th>
                             <th>Role</th>
                             <th>Actions</th>
-                        
+
                         </tr>
                     </thead>
                     <tbody>
@@ -385,19 +449,13 @@
                             <td>{{ user.role }}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <button 
-                                        class="btn btn-edit btn-tooltip" 
-                                        onclick="update_user('{{ user.id}}')"
-                                        data-tooltip="Edit Schedule"
-                                    >
+                                    <button class="btn btn-edit btn-tooltip" onclick="update_user('{{ user.id}}')"
+                                        data-tooltip="Edit Schedule">
                                         <i class="fas fa-edit"></i>
                                         Edit
                                     </button>
-                                    <button 
-                                        class="btn btn-delete btn-tooltip" 
-                                        onclick="delete_user('{{ user.id }}')"
-                                        data-tooltip="Delete Schedule"
-                                    >
+                                    <button class="btn btn-delete btn-tooltip" onclick="delete_user('{{ user.id }}')"
+                                        data-tooltip="Delete Schedule">
                                         <i class="fas fa-trash"></i>
                                         Delete
                                     </button>
@@ -412,176 +470,176 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <div class="overlay" id="overlay" style="display: none;"></div>
-    <div class="popup-container" id="popupContainer" style="display: none;">
-        <h2 id="popupTitle">Add User</h2>
-        <form id="addUserForm" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="id" id="user_id">
-            <div class="input-field">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ user.username }}" required>
-            
+            <div class="overlay" id="overlay" style="display: none;"></div>
+            <div class="popup-container" id="popupContainer" style="display: none;">
+                <h2 id="popupTitle">Add User</h2>
+                <form id="addUserForm" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" id="user_id">
+                    <div class="input-field">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+
+                    </div>
+                    <div class="input-field">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="role">Role:</label>
+                        <input type="text" id="role" name="role" value="{{ user.role }}" required>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="add-button">Add User</button>
+                        <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
+                    </div>
+                </form>
+                <div id="messages"></div>
             </div>
-            <div class="input-field">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="input-field">
-                 <label for="role">Role:</label>
-                <input type="text" id="role" name="role" value="{{ user.role }}" required>
-            </div>
-            <div class="button-container">
-                <button type="submit" class="add-button">Add User</button>
-                <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
-            </div>
-        </form>
-        <div id="messages"></div>
-    </div>
-    
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            const csrftoken = '{{ csrf_token }}';
-            // Function to show the popup
-            function showPopup() {
-                document.getElementById("overlay").style.display = "block";
-                document.getElementById("popupContainer").style.display = "block";
-            }
-    
-            // Function to hide the popup
-            function hidePopup() {
-                document.getElementById("overlay").style.display = "none";
-                document.getElementById("popupContainer").style.display = "none";
-                $('#messages').empty();
-            }
-            function showEditPopup() {
-                isEditing = true;
-                document.getElementById('popupTitle').innerText = 'Edit User';
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('popupContainer').style.display = 'block';
-                document.getElementById('messages').innerHTML = '';
-            }
-            // AJAX form submission
-            $('#addUserForm').on('submit', function(e) {
-    e.preventDefault();
-    $.ajax({
-        type: 'POST',
-        url: '{% url "add_user" %}',  // Adjust URL to your URL pattern
-        data: $(this).serialize(),
-        success: function(response) {
-            if (response.success) {
-                $('#messages').html('<div class="message success">' + response.message + '</div>');
-                
-                // Append new user to the table
-                let newRow = `
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                const csrftoken = '{{ csrf_token }}';
+                // Function to show the popup
+                function showPopup() {
+                    document.getElementById("overlay").style.display = "block";
+                    document.getElementById("popupContainer").style.display = "block";
+                }
+
+                // Function to hide the popup
+                function hidePopup() {
+                    document.getElementById("overlay").style.display = "none";
+                    document.getElementById("popupContainer").style.display = "none";
+                    $('#messages').empty();
+                }
+                function showEditPopup() {
+                    isEditing = true;
+                    document.getElementById('popupTitle').innerText = 'Edit User';
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('popupContainer').style.display = 'block';
+                    document.getElementById('messages').innerHTML = '';
+                }
+                // AJAX form submission
+                $('#addUserForm').on('submit', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "add_user" %}',  // Adjust URL to your URL pattern
+                        data: $(this).serialize(),
+                        success: function (response) {
+                            if (response.success) {
+                                $('#messages').html('<div class="message success">' + response.message + '</div>');
+
+                                // Append new user to the table
+                                let newRow = `
                     <tr>
                         <td>${response.user.username}</td>
                         <td>${response.user.password}</td>
                         <td>${response.user.role}</td>
                     </tr>
                 `;
-                $('.schedule-table tbody').append(newRow);
-                hidePopup();
-            } else {
-                $('#messages').html('<div class="message error">' + response.message + '</div>');
-            }
-        },
-        error: function() {
-            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
-        }
-    });
-});
-function update_user(user_id) {
-    console.log("Edit clicked for user ID:", user_id);
-    currentUserId = user_id;
+                                $('.schedule-table tbody').append(newRow);
+                                hidePopup();
+                            } else {
+                                $('#messages').html('<div class="message error">' + response.message + '</div>');
+                            }
+                        },
+                        error: function () {
+                            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+                        }
+                    });
+                });
+                function update_user(user_id) {
+                    console.log("Edit clicked for user ID:", user_id);
+                    currentUserId = user_id;
 
-    $.ajax({
-        url: "{% url 'get_user' 999999 %}".replace('999999', user_id),
-        type: 'GET',
-        headers: {
-            'X-CSRFToken': csrftoken
-        },
-        success: function(data) {
-            document.getElementById('user_id').value = data.user_id;
-            document.getElementById('password').value=data.password;
-            document.getElementById('username').value = data.username;
-            document.getElementById('role').value = data.role || ''; // Set role, if exists
+                    $.ajax({
+                        url: "{% url 'get_user' 999999 %}".replace('999999', user_id),
+                        type: 'GET',
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        success: function (data) {
+                            document.getElementById('user_id').value = data.user_id;
+                            document.getElementById('password').value = data.password;
+                            document.getElementById('username').value = data.username;
+                            document.getElementById('role').value = data.role || ''; // Set role, if exists
 
-            showEditPopup();  // Show the edit popup
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching user:', error);
-            console.error('Response:', xhr.responseText);
-            alert('Error fetching user details. Please try again.');
-        }
-    });
-}
-
-$('#userForm').on('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-
-    let url;
-    if (isEditing && currentUserId) {
-        url = "{% url 'update_user' 999999 %}".replace('999999', currentUserId);
-        formData.append('user_id', currentUserId);
-    } else {
-        url = "{% url 'add_user' %}"; // Assuming you have a similar add user endpoint
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: formData,
-        processData: false,
-        contentType: false,
-        headers: {
-            'X-CSRFToken': csrftoken
-        },
-        success: function(response) {
-            if (response.success) {
-                $('#messages').html('<div class="message success">' + response.message + '</div>');
-                setTimeout(() => {
-                    hidePopup();
-                    location.reload();  // Reload the page to reflect changes
-                }, 1000);
-            } else {
-                $('#messages').html('<div class="message error">' + (response.message || 'An error occurred.') + '</div>');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Form submission error:', error);
-            console.error('Response:', xhr.responseText);
-            $('#messages').html('<div class="message error">Error: ' + (xhr.responseJSON?.message || 'An error occurred. Please try again.') + '</div>');
-        }
-    });
-});
-
-function delete_user(user_id) {
-    if (confirm('Are you sure you want to delete this user?')) {
-        $.ajax({
-            url: "{% url 'delete_user' 999999 %}".replace('999999', user_id),
-            type: 'DELETE',
-            headers: {
-                'X-CSRFToken': csrftoken
-            },
-            success: function(response) {
-                if (response.success) {
-                    location.reload();  // Reload the page after successful deletion
-                } else {
-                    alert('Error deleting user: ' + response.message);
+                            showEditPopup();  // Show the edit popup
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching user:', error);
+                            console.error('Response:', xhr.responseText);
+                            alert('Error fetching user details. Please try again.');
+                        }
+                    });
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error deleting user:', error);
-                alert('Error deleting user. Please try again.');
-            }
-        });
-    }
-}
-        </script>
-        
-    </body>
-    </html>
+
+                $('#userForm').on('submit', function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+
+                    let url;
+                    if (isEditing && currentUserId) {
+                        url = "{% url 'update_user' 999999 %}".replace('999999', currentUserId);
+                        formData.append('user_id', currentUserId);
+                    } else {
+                        url = "{% url 'add_user' %}"; // Assuming you have a similar add user endpoint
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#messages').html('<div class="message success">' + response.message + '</div>');
+                                setTimeout(() => {
+                                    hidePopup();
+                                    location.reload();  // Reload the page to reflect changes
+                                }, 1000);
+                            } else {
+                                $('#messages').html('<div class="message error">' + (response.message || 'An error occurred.') + '</div>');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Form submission error:', error);
+                            console.error('Response:', xhr.responseText);
+                            $('#messages').html('<div class="message error">Error: ' + (xhr.responseJSON?.message || 'An error occurred. Please try again.') + '</div>');
+                        }
+                    });
+                });
+
+                function delete_user(user_id) {
+                    if (confirm('Are you sure you want to delete this user?')) {
+                        $.ajax({
+                            url: "{% url 'delete_user' 999999 %}".replace('999999', user_id),
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRFToken': csrftoken
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    location.reload();  // Reload the page after successful deletion
+                                } else {
+                                    alert('Error deleting user: ' + response.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error deleting user:', error);
+                                alert('Error deleting user. Please try again.');
+                            }
+                        });
+                    }
+                }
+            </script>
+
+</body>
+
+</html>

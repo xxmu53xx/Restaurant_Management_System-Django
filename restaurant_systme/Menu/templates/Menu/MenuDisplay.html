@@ -1,16 +1,19 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Management</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
@@ -24,8 +27,27 @@
             padding: 20px;
         }
 
+        .logo {
+            align-items: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            /* Ensures margin auto works */
+        }
+
+        .logo-text {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
         .main-content {
-            margin-left: 120px;
+            margin-left: 250px;
             padding: 20px;
             background-color: #f4f5f9;
             min-height: 100vh;
@@ -53,38 +75,6 @@
         .welcome-section h2 {
             color: #e63946;
             font-size: 2em;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .grid-item {
-            background-color: #e6e6e6;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .grid-item:hover {
-            transform: translateY(-5px);
-            background-color: #f8f8f8;
-        }
-
-        .grid-item i {
-            font-size: 2em;
-            color: #e63946;
-            margin-bottom: 10px;
-        }
-
-        .grid-item p {
-            color: #333;
-            font-weight: bold;
         }
 
         .search-bar {
@@ -126,20 +116,75 @@
         .menu-item i {
             margin-right: 10px;
         }
+
         .selected {
-            background-color: #e63946;  
-            color: white;           
-            border: 2px solid #f1faee;  
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            transform: translateY(-3px); 
+            background-color: #e63946;
+            border-radius: 4px;
         }
+
+        .account-section {
+            position: relative;
+            margin-top: 250px;
+            cursor: pointer;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .account-info img {
+            width: 55px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .account-info span {
+            font-size: 16px;
+            color: #f1faee;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: -80px;
+            left: 0;
+            background-color: #444;
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+        .dropdown i {
+            margin-right: 8px;
+        }
+
+        .account-section:hover .dropdown {
+            display: block;
+        }
+
         .schedule-container {
             background-color: white;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 1000px; /* Limit the width of the container */
-            margin: 0 auto; /* Center the container */
+            margin-left: -250px;
         }
 
         .schedule-header {
@@ -153,21 +198,25 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
+            margin: 0 auto;
         }
 
         .add-schedule-btn {
             background-color: #e63946;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
         }
 
+        .add-schedule-btn i {
+            margin-right: 5px;
+        }
+
         .schedule-table {
             width: 100%;
-            border-collapse: collapse;
         }
 
         .schedule-table th, .schedule-table td {
@@ -185,6 +234,7 @@
         .schedule-table tr:hover {
             background-color: #f9f9f9;
         }
+
         .overlay {
             display: none;
             position: fixed;
@@ -226,7 +276,6 @@
 
         .input-field {
             margin-bottom: 20px;
-            
         }
 
         .input-field label {
@@ -258,7 +307,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            width: 48%;
+            width: 50%;
         }
 
         .add-button {
@@ -270,58 +319,67 @@
             background-color: #333;
             color: white;
         }
-              
-   
+
+
         .btn-edit {
             background-color: #0e8225;
             color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
         }
-    .btn-edit:hover {
-        background-color: #45a049;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0);
-    }
 
-    .btn-delete {
-        background-color: #e63946;
-        color: white;
-    }
+        .btn-edit:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
 
-    .btn-delete:hover {
-        background-color: #d32f2f;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0);
-    }
+        .btn-delete {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
 
-    /* Animation for button click */
-    .btn:active {
-        transform: translateY(1px);
-        box-shadow: none;
-    }
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            transform: translateY(-1px);
+        }
 
-
+        /* Animation for button click */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="sidebar">
-        <h2>DilaoRant RMS</h2>
+        <div class="logo">
+            <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            <div class="logo-text">
+                DilaoRant RMS
+            </div>
+        </div>
         <div style="margin-top: 30px;">
-            <a href="{% url 'successdashboard' %}" class="menu-item">
+            <a href="{% url 'HomeDashboard' %}" class="menu-item">
                 <i class="fas fa-chart-line"></i>
                 Dashboard
             </a>
-           
+
             <a href="{% url 'Display' %}" class="menu-item">
                 <i class="fa-regular fa-calendar"></i>
                 Employee Schedule
-            </a>    
-           
+            </a>
+
             <a href="{% url 'DisplayUser'%}" class="menu-item">
                 <i class="fa-regular fa-user"></i>
                 User
-            </a>   
+            </a>
             <a href="{% url 'DisplayReservation'%}" class="menu-item">
                 <i class="fa-solid fa-calendar-check"></i>
                 Reservation
@@ -329,91 +387,92 @@
             <a href="{% url 'DisplayPayment' %}" class="menu-item">
                 <i class="fa-regular fa-credit-card"></i>
                 Payment
-            </a>   
+            </a>
             <div class="selected">
-            <a href="{% url 'DisplayMenu' %}" class="menu-item">
-                <i class="fa-solid fa-folder-open"></i>
-                Menu
-            </a> </div>
+                <a href="{% url 'DisplayMenu' %}" class="menu-item">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Menu
+                </a>
+            </div>
             <a href="{% url 'DisplayOrder' %}" class="menu-item">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Order
-            </a> 
-            <a href="{% url 'logout' %}" class="menu-item">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                Logout
             </a>
+
+            <div class="account-section">
+                <div class="account-info">
+                    <img src="{% static 'User/user.jpg' %}" alt="User">
+                    <span>{{ user.username }}</span>
+                </div>
+                <div class="dropdown">
+                    <a href="">
+                        <i class="fa-regular fa-user"></i> User Profile
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="top-bar" style=" margin-left: 150px;">
+        <div class="top-bar">
             <input type="text" class="search-bar" placeholder="Search">
-            <div class="user-profile">
-                <span class="notification">0</span>
-                <span>Odilao</span>
-                <img src="{% static 'dashboard/bg3.png' %}" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
-        
-        
-        
-            </div>
         </div>
         <!--Enter functionality here-->
         <div class="main-content">
-        
-          
+
+            <div class="schedule-container">
                 <div class="schedule-header">
                     <h2 class="schedule-title">&nbsp;&nbsp;&nbsp;&nbsp;Menu</h2>
-                    <button class="add-schedule-btn" onclick="showPopup()">+ Add Menu</button>
-                </div>  
-                
-                <div class="schedule-container">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Menu ID</th>
-                                <th>Menu Item Name</th>
-                                <th>Price</th>
-                                <th>Description</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for menu in menus %}
-                            <tr>
-                                <td>{{menu.id}}</td>
-                                <td>{{ menu.name }}</td>
-                                <td>${{ menu.price }}</td>
-                                <td>{{ menu.description }}</td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button 
-    class="btn btn-edit btn-tooltip" 
-    onclick="openEditPopup('{{ menu.id }}', '{{ menu.name }}', '{{ menu.price }}', '{{ menu.description }}')"
-    data-tooltip="Edit Menu Item">
-    <i class="fas fa-edit"></i>
-    Edit
-</button>
-                                        <button 
-                                            class="btn btn-delete btn-tooltip" 
-                                            onclick="delete_menu('{{ menu.id }}')"
-                                            data-tooltip="Delete Schedule"
-                                        >
-                                            <i class="fas fa-trash"></i>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" style="text-align: center;">No menu items found.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <button class="add-schedule-btn" onclick="showPopup()"><i class="fas fa-plus"></i>
+                        Add Menu
+                    </button>
                 </div>
-                
+
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Menu ID</th>
+                            <th>Menu Item Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for menu in menus %}
+                        <tr>
+                            <td>{{menu.id}}</td>
+                            <td>{{ menu.name }}</td>
+                            <td>${{ menu.price }}</td>
+                            <td>{{ menu.description }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-edit btn-tooltip"
+                                        onclick="openEditPopup('{{ menu.id }}', '{{ menu.name }}', '{{ menu.price }}', '{{ menu.description }}')"
+                                        data-tooltip="Edit Menu Item">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-delete btn-tooltip" onclick="delete_menu('{{ menu.id }}')"
+                                        data-tooltip="Delete Schedule">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center;">No menu items found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
         <div class="overlay" id="overlay"></div>
@@ -423,7 +482,7 @@
             <form id="addMenuForm">
                 {% csrf_token %}
                 <input type="hidden" name="menuId" id="menuId"> <!-- Hidden field for menu ID -->
-        
+
                 <div class="input-field">
                     <label for="id_name">Menu Item Name:</label>
                     <input type="text" name="name" id="id_name" required>
@@ -444,7 +503,7 @@
             </form>
         </div>
 
-    
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>const csrftoken = '{{ csrf_token }}';
             function showPopup() {
@@ -452,104 +511,105 @@
                 document.getElementById('overlay').style.display = 'block';
                 document.getElementById('popupContainer').style.display = 'block';
             }
-    
+
             function hidePopup() {
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('popupContainer').style.display = 'none';
-    document.getElementById('addMenuForm').reset();  // Corrected this line
-    document.getElementById('messages').innerHTML = '';
-}
-
-function openEditPopup(id, name, price, description) {
-    document.getElementById('popupTitle').innerText = 'Edit Menu';
-    document.getElementById('menuId').value = id;
-    document.getElementById('id_name').value = name;
-    document.getElementById('id_price').value = price;
-    document.getElementById('id_description').value = description;
-
-    document.getElementById('popupTitle').innerText = 'Edit Menu Item';
-    document.getElementById('submitButton').innerText = 'Update Menu Item';
-
-    showPopup();
-}$('#addMenuForm').on('submit', function(e) {
-    e.preventDefault();
-
-    const menuId = document.getElementById('menuId').value;
-    const url = menuId ? `/update_menu/${menuId}/` : '{% url "add_menu" %}';
-    const method = menuId ? 'PUT' : 'POST';
-
-    $.ajax({
-        type: method,
-        url: url,
-        data: $(this).serialize(),
-        headers: { 'X-CSRFToken': csrftoken },
-        success: function(response) {
-            if (response.success) {
-                $('#messages').html(`<div class="message success">${response.message}</div>`);
-                hidePopup();
-                location.reload();  // Reload page to reflect changes
-            } else {
-                $('#messages').html(`<div class="message error">${response.message}</div>`);
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('popupContainer').style.display = 'none';
+                document.getElementById('addMenuForm').reset();  // Corrected this line
+                document.getElementById('messages').innerHTML = '';
             }
-        },
-        error: function() {
-            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
-        }
-    });
-});
+
+            function openEditPopup(id, name, price, description) {
+                document.getElementById('popupTitle').innerText = 'Edit Menu';
+                document.getElementById('menuId').value = id;
+                document.getElementById('id_name').value = name;
+                document.getElementById('id_price').value = price;
+                document.getElementById('id_description').value = description;
+
+                document.getElementById('popupTitle').innerText = 'Edit Menu Item';
+                document.getElementById('submitButton').innerText = 'Update Menu Item';
+
+                showPopup();
+            } $('#addMenuForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const menuId = document.getElementById('menuId').value;
+                const url = menuId ? `/update_menu/${menuId}/` : '{% url "add_menu" %}';
+                const method = menuId ? 'PUT' : 'POST';
+
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: $(this).serialize(),
+                    headers: { 'X-CSRFToken': csrftoken },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#messages').html(`<div class="message success">${response.message}</div>`);
+                            hidePopup();
+                            location.reload();  // Reload page to reflect changes
+                        } else {
+                            $('#messages').html(`<div class="message error">${response.message}</div>`);
+                        }
+                    },
+                    error: function () {
+                        $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+                    }
+                });
+            });
             // Close popup when clicking outside
             document.getElementById('overlay').addEventListener('click', hidePopup);
-    
 
-            $('#addMenuForm').on('submit', function(e) {
-    e.preventDefault();
-    $.ajax({
-        type: 'POST',
-        url: '{% url "add_menu" %}',
-        data: $(this).serialize(),
-        success: function(response) {
-            if (response.success) {
-                $('#messages').html('<div class="message success">' + response.message + '</div>');
-                hidePopup(); // Close the popup
-                // Optionally, you could reload the menu items here or update the list dynamically
-                location.reload(); // Reload the page to show the new item
-            } else {
-                $('#messages').html('<div class="message error">' + response.message + '</div>');
-            }
-        },
-        error: function() {
-            $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
-        }
-    });
-});
-            
-      
+
+            $('#addMenuForm').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "add_menu" %}',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#messages').html('<div class="message success">' + response.message + '</div>');
+                            hidePopup(); // Close the popup
+                            // Optionally, you could reload the menu items here or update the list dynamically
+                            location.reload(); // Reload the page to show the new item
+                        } else {
+                            $('#messages').html('<div class="message error">' + response.message + '</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#messages').html('<div class="message error">An error occurred. Please try again.</div>');
+                    }
+                });
+            });
 
 
 
-function delete_menu(menu_id) {
-    if (confirm('Are you sure you want to delete this Menu?')) {
-        $.ajax({
-            url: "{% url 'delete_menu' 999999 %}".replace('999999', menu_id),
-            type: 'DELETE',
-            headers: {
-                'X-CSRFToken': csrftoken
-            },
-            success: function(response) {
-                if (response.success) {
-                    location.reload();
-                } else {
-                    alert('Error deleting Menu: ' + response.message);
+
+
+            function delete_menu(menu_id) {
+                if (confirm('Are you sure you want to delete this Menu?')) {
+                    $.ajax({
+                        url: "{% url 'delete_menu' 999999 %}".replace('999999', menu_id),
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                location.reload();
+                            } else {
+                                alert('Error deleting Menu: ' + response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error deleting Menu:', error);
+                            alert('Error deleting Menu. Please try again.');
+                        }
+                    });
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error deleting Menu:', error);
-                alert('Error deleting Menu. Please try again.');
             }
-        });
-    }
-}
         </script>
     </div>
 </body>
+
 </html>

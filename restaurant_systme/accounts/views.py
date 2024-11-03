@@ -20,7 +20,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('successdashboard')  # Redirect to the dashboard on successful login
+            return redirect('HomeDashboard')  # Redirect to the dashboard on successful login
         else:
             messages.error(request, "Invalid username or password")
     return render(request, 'accounts/login.html')
@@ -54,8 +54,8 @@ def signup_view(request):
     
     return render(request, 'accounts/signup.html')
 
-def success_view(request):
-    return render(request, 'accounts/success.html')
+def home_view(request):
+    return render(request, 'accounts/home.html')
 
 def reset_password(request, username):
     if request.method == 'POST':

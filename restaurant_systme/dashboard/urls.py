@@ -3,7 +3,7 @@ from . import views
 
 from django.contrib.auth.decorators import login_required
 urlpatterns = [
-    path('success/',views.success_viewer,name='successdashboard'),
+    path('home/',views.success_viewer,name='HomeDashboard'),
     path('display/',views.redirect_eS,name='Display'),
     path('displayOrder/',views.redirect_Order,name='DisplayOrder'),
     path('displayReservation/',views.redirect_Reservation,name='DisplayReservation'),
