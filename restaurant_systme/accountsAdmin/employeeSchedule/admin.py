@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from employeeSchedule.models import EmSchedule
+from accountsAdmin.employeeSchedule.models import EmSchedule
 
 # Register your models here.
 

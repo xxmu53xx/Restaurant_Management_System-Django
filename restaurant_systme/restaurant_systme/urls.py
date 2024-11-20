@@ -22,10 +22,10 @@ urlpatterns = [
    
     path('',include("accounts.urls")),
     path('dashboard/',include("dashboard.urls")),
-    path('dashboard/employeeSchedule/',include("employeeSchedule.urls")),
-    path('dashboard/Order/',include("Order.urls")),
-    path('dashboard/Reservation/',include("Reservation.urls")),
-    path('dashboard/User/',include("User.urls")),
-    path('dashboard/Payment/',include("Payment.urls")),
-    path('dashboard/Menu/',include("Menu.urls"))
+    path('dashboard/employeeSchedule/',include("accountsAdmin.employeeSchedule.urls")),
+    path('dashboard/User/',include("accountsAdmin.User.urls")),
+    path('dashboard/Order/',include("accountsCashier.Order.urls")),
+    path('dashboard/Reservation/',include("accountsCashier.Reservation.urls")),
+    path('dashboard/Payment/',include("accountsCashier.Payment.urls")),
+    path('dashboard/Menu/',include("accountsCashier.Menu.urls"))
 ]

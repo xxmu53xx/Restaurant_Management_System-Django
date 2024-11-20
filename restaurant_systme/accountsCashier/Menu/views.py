@@ -2,7 +2,7 @@
 import json
 from django.shortcuts import render
 from django.http import Http404, HttpResponseNotAllowed, JsonResponse
-from Menu.models import Menu
+from accountsCashier.Menu.models import Menu
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods

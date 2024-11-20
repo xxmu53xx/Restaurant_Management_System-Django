@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from employeeSchedule.forms import ScheduleForm
-from employeeSchedule.models import EmSchedule
+from accountsAdmin.employeeSchedule.forms import ScheduleForm
+from accountsAdmin.employeeSchedule.models import EmSchedule
 
 @login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
