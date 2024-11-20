@@ -11,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 
 from django.contrib.auth import logout  
 
-
+# login function
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -25,10 +25,12 @@ def login_view(request):
             messages.error(request, "Invalid username or password")
     return render(request, 'accounts/login.html')
 
+# logout function
 def logout_view(request):
     logout(request)
     return redirect('login')  # Redirect to the login page after logout
 
+# signup function
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -54,9 +56,11 @@ def signup_view(request):
     
     return render(request, 'accounts/signup.html')
 
+# home / dashboard function
 def home_view(request):
     return render(request, 'accounts/home.html')
 
+# reset password function
 def reset_password(request, username):
     if request.method == 'POST':
         new_password = request.POST.get('new_password')
@@ -76,6 +80,7 @@ def reset_password(request, username):
 
     return render(request, 'accounts/reset_password.html', {'username': username})
 
+# forgot password function
 def forgot_password(request):
     if request.method == 'POST':
         username = request.POST.get('username')

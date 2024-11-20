@@ -16,16 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from accounts.views import login_view, signup_view, home_view
+
 urlpatterns = [
+    # admin url
     path('admin/', admin.site.urls),
    
+    # accounts url
     path('',include("accounts.urls")),
-    path('dashboard/',include("dashboard.urls")),
-    path('dashboard/employeeSchedule/',include("accountsAdmin.employeeSchedule.urls")),
-    path('dashboard/User/',include("accountsAdmin.User.urls")),
-    path('dashboard/Order/',include("accountsCashier.Order.urls")),
-    path('dashboard/Reservation/',include("accountsCashier.Reservation.urls")),
-    path('dashboard/Payment/',include("accountsCashier.Payment.urls")),
-    path('dashboard/Menu/',include("accountsCashier.Menu.urls"))
+
+    # dashboards urls
+    path('accountsAdmin/dashboard/',include("dashboard.urls")),
+    path('accountsCashier/dashboard/',include("dashboard.urls")),
+
+    # accountsAdmin urls
+    path('accountsAdmin/employeeSchedule/',include("accountsAdmin.employeeSchedule.urls")),
+    path('accountsAdmin/User/',include("accountsAdmin.User.urls")),
+
+    # accountsCashier urls
+    path('accountsCashier/Order/',include("accountsCashier.Order.urls")),
+    path('accountsCashier/Reservation/',include("accountsCashier.Reservation.urls")),
+    path('accountsCashier/Payment/',include("accountsCashier.Payment.urls")),
+    path('accountsCashier/Menu/',include("accountsCashier.Menu.urls"))
 ]
