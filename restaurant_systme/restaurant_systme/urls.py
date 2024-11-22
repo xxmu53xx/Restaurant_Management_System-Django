@@ -24,17 +24,15 @@ urlpatterns = [
     # accounts url
     path('',include("accounts.urls")),
 
-    # dashboards urls
-    path('accountsAdmin/dashboard/',include("dashboard.urls")),
-    path('accountsCashier/dashboard/',include("dashboard.urls")),
-
-    # accountsAdmin urls
-    path('accountsAdmin/employeeSchedule/',include("accountsAdmin.employeeSchedule.urls")),
-    path('accountsAdmin/User/',include("accountsAdmin.User.urls")),
+    # accountsAdmin dashboard url
+    path('ad/Dashboard', include('dashboard.urls')),
+    path('ad/employeeSchedule', include('accountsAdmin.employeeSchedule.urls')),
+    path('ad/User', include('accountsAdmin.User.urls'))
 
     # accountsCashier urls
-    path('accountsCashier/Order/',include("accountsCashier.Order.urls")),
-    path('accountsCashier/Reservation/',include("accountsCashier.Reservation.urls")),
-    path('accountsCashier/Payment/',include("accountsCashier.Payment.urls")),
-    path('accountsCashier/Menu/',include("accountsCashier.Menu.urls"))
+    #path('accountsAdmin/dashboard/',include("accountsAdmin.dashboard.urls")),
+    #path('accountsCashier/Order/',include("accountsCashier.Order.urls")),
+    #path('accountsCashier/Reservation/',include("accountsCashier.Reservation.urls")),
+    #path('accountsCashier/Payment/',include("accountsCashier.Payment.urls")),
+    #path('accountsCashier/Menu/',include("accountsCashier.Menu.urls"))
 ]

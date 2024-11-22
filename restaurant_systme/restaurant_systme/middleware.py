@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
 from django.conf import settings
 import re
-
 from django.urls import reverse 
+
 class LoginRequiredMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

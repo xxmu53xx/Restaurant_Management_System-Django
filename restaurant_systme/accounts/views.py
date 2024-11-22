@@ -2,14 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.urls import reverse
-from django.views.decorators.cache import never_cache
-from django.utils.safestring import mark_safe
 from django.contrib.auth.hashers import make_password
-
-from django.views.decorators.http import require_http_methods
-
 from django.contrib.auth import logout  
+from django.http import HttpResponseRedirect
+
+def redirect_login(request):
+    return HttpResponseRedirect('/login/')
 
 # login function
 def login_view(request):
@@ -20,7 +18,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('HomeDashboard')  # Redirect to the dashboard on successful login
+            return redirect('dashboard')  # Redirect to the dashboard on successful login
         else:
             messages.error(request, "Invalid username or password")
     return render(request, 'accounts/login.html')
@@ -34,14 +32,19 @@ def logout_view(request):
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST['username']
-        email = request.POST['email']  # Get the email from form data
+        email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        role = request.POST['role']
 
+        # Validate passwords
         if password != confirm_password:
             messages.error(request, 'Passwords do not match')
-            return redirect('signup') 
+            return redirect('signup')
 
+        # Check for duplicate username or email
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken')
             return redirect('signup')
@@ -50,15 +53,30 @@ def signup_view(request):
             messages.error(request, 'Email already registered')
             return redirect('signup')
 
-        user = User.objects.create_user(username=username, email=email, password=password)
-        messages.success(request, 'Account created successfully')
-        return redirect('login') 
-    
-    return render(request, 'accounts/signup.html')
+        # Create user
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
 
-# home / dashboard function
-def home_view(request):
-    return render(request, 'accounts/home.html')
+        # Set user privileges based on role
+        if role == 'Admin':
+            user.is_staff = True
+            user.is_superuser = True
+        else:
+            user.is_staff = False
+            user.is_superuser = False
+
+        user.save()
+
+        # Success message and redirect
+        messages.success(request, 'Account created successfully')
+        return redirect('login')
+
+    return render(request, 'accounts/signup.html')
 
 # reset password function
 def reset_password(request, username):
@@ -86,7 +104,11 @@ def forgot_password(request):
         username = request.POST.get('username')
         try:
             user = User.objects.get(username=username)
-            return redirect('reset_password', username=user.username)
+            return redirect('reset_password', username=user.username)   
         except User.DoesNotExist:
             messages.error(request, 'Username not found')
     return render(request, 'accounts/forgot_password.html')
+
+# home / dashboard function
+def dashboard_view(request):
+    return render(request, 'accounts/dashboard.html')

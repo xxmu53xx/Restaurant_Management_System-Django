@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DilaoRant RMS - Dashboard - Home</title>
+    <title>DilaoRant RMS - Dashboard</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400&display=swap');
 
@@ -224,43 +224,29 @@
 <body>
     <div class="sidebar">
         <div class="logo">
-            <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            </a>
             <div class="logo-text">
                 DilaoRant RMS
             </div>
         </div>
         <div style="margin-top: 30px;">
             <div class="selected">
-                <a href="#" class="menu-item">
+                <a href="" class="menu-item">
                     <i class="fas fa-chart-line"></i>
                     Dashboard
                 </a>
             </div>
-            <a href="{% url 'Display' %}" class="menu-item">
-                <i class="fa-regular fa-calendar"></i>
-                Employee Schedule
-            </a>
         </div>
 
-        <a href="{% url 'DisplayUser'%}" class="menu-item">
+        <a href="{% url 'employeeSchedule' %}" class="menu-item">
+            <i class="fa-regular fa-calendar"></i>
+            Employee Schedule
+        </a>
+        <a href="{% url 'user_view'%}" class="menu-item">
             <i class="fa-regular fa-user"></i>
             User
-        </a>
-        <a href="{% url 'DisplayReservation'%}" class="menu-item">
-            <i class="fa-solid fa-calendar-check"></i>
-            Reservation
-        </a>
-        <a href="{% url 'DisplayPayment' %}" class="menu-item">
-            <i class="fa-regular fa-credit-card"></i>
-            Payment
-        </a>
-        <a href="{% url 'DisplayMenu' %}" class="menu-item">
-            <i class="fa-solid fa-folder-open"></i>
-            Menu
-        </a>
-        <a href="{% url 'DisplayOrder' %}" class="menu-item">
-            <i class="fa-solid fa-cart-shopping"></i>
-            Order
         </a>
 
         <div class="account-section">
@@ -289,42 +275,7 @@
             <h2>DilaoRant RMS</h2>
         </div>
 
-        <div class="grid-container">
-            <a href="" class="grid-item">
-                <i class="fas fa-utensils"></i>
-                <p>DilaoRant RMS Info</p>
-            </a>
-            <a href="{% url 'Display' %}" class="grid-item">
-                <i class="fa-regular fa-calendar"></i>
-                <p>Employee Schedule</p>
-            </a>
-            <a href="{% url 'DisplayUser' %}" class="grid-item">
-                <i class="fa-regular fa-user"></i>
-                <p>Users</p>
-            </a>
-            <a href="{% url 'DisplayReservation' %}" class="grid-item">
-                <i class="fa-solid fa-calendar-check"></i>
-                <p>Reservation</p>
-            </a>
-        </div>
-        <div class="grid-container">
-            <a href="{% url 'DisplayPayment' %}" class="grid-item">
-                <i class="fa-regular fa-credit-card"></i>
-                <p>Payment</p>
-            </a>
-            <a href="{% url 'DisplayMenu' %}" class="grid-item">
-                <i class="fa-solid fa-folder-open"></i>
-                <p>Menu</p>
-            </a>
-            <a href="{% url 'DisplayOrder' %}" class="grid-item">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <p>Order</p>
-            </a>
-            <a href="{% url 'logout' %}" class="grid-item">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <p>Logout</p>
-            </a>
-        </div>
+        
 </body>
 
 </html>

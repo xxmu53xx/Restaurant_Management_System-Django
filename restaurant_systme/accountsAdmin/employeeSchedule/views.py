@@ -1,11 +1,16 @@
-from django.contrib import messages
-from django.http import Http404, HttpResponseNotAllowed, JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from accountsAdmin.employeeSchedule.forms import ScheduleForm
 from accountsAdmin.employeeSchedule.models import EmSchedule
+from accountsAdmin.employeeSchedule.forms import ScheduleForm
+
+@login_required(login_url='login')
+@require_http_methods(["GET"])
+def employeeSchedule_view(request):
+    schedules = EmSchedule.objects.all().order_by('employee_id')
+    return render(request, 'employeeSchedule/employeeSchedule.html', {'schedules': schedules})
 
 @login_required(login_url='login')
 @require_http_methods(["GET", "POST"])
@@ -27,88 +32,33 @@ def add_schedule(request):
             }, status=400)
     else:
         form = ScheduleForm()
-    return render(request, 'employeeSchedule/employeeSchedule.html', {'form': form})
+    return render(request, 'employeeSchedule/add_schedule.html', {'form': form})
 
 @login_required(login_url='login')
 @require_http_methods(["GET"])
 def get_schedule(request, schedule_id):
-    try:
-        schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
-        data = {
-            'employee_id': schedule.employee_id,
-            'shift_date': schedule.shift_date.strftime('%Y-%m-%d'),
-            'shift_time': schedule.shift_time.strftime('%H:%M'),
-            'end_time': schedule.end_time.strftime('%H:%M'),
-        }
-        return JsonResponse(data)
-    except EmSchedule.DoesNotExist:
-        return JsonResponse({'error': 'Schedule not found'}, status=404)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+    schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
+    return JsonResponse({
+        'employee_id': schedule.employee_id,
+        'shift_date': schedule.shift_date.strftime('%Y-%m-%d'),
+        'shift_time': schedule.shift_time.strftime('%H:%M'),
+        'end_time': schedule.end_time.strftime('%H:%M'),
+    })
 
 @login_required(login_url='login')
 @require_http_methods(["POST"])
 def update_schedule(request, schedule_id):
-    try:
-        schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
-        
-        # Create a form instance with the POST data and instance
-        form = ScheduleForm(request.POST, instance=schedule)
-        
-        if form.is_valid():
-            form.save()
-            return JsonResponse({
-                'success': True,
-                'message': 'Schedule updated successfully.'
-            })
-        else:
-            return JsonResponse({
-                'success': False,
-                'message': 'Invalid form data.',
-                'errors': form.errors.as_json()
-            }, status=400)
-
-    except EmSchedule.DoesNotExist:
-        return JsonResponse({
-            'success': False,
-            'message': 'Schedule not found.'
-        }, status=404)
-    except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'message': str(e)
-        }, status=500)
+    schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
+    form = ScheduleForm(request.POST, instance=schedule)
+    if form.is_valid():
+        form.save()
+        return JsonResponse({'success': True, 'message': 'Schedule updated successfully!'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid form data.', 'errors': form.errors.as_json()}, status=400)
 
 @login_required(login_url='login')
-@require_http_methods(["DELETE"])
+@require_http_methods(["POST"])
 def delete_schedule(request, schedule_id):
-    try:
-        schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
-        schedule.delete()
-        return JsonResponse({
-            'success': True,
-            'message': 'Schedule deleted successfully!'
-        })
-    except EmSchedule.DoesNotExist:
-        return JsonResponse({
-            'success': False,
-            'message': 'Schedule not found.'
-        }, status=404)
-    except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'message': str(e)
-        }, status=500)
-
-@login_required(login_url='login')
-def display_schedule(request):
-    schedules = EmSchedule.objects.all().order_by('employee_id')
-    return render(request, 'employeeSchedule/eSPrint.html', {'schedules': schedules})
-
-@login_required(login_url='login')
-def display_schedulev2(request):
-    schedules = EmSchedule.objects.all().order_by('employee_id')
-    return render(request, 'employeeSchedule/EsDisplay.html', {'schedules': schedules})
-
-def redirect_dashboard(request):
-    return redirect('')
+    schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
+    schedule.delete()
+    return JsonResponse({'success': True, 'message': 'Schedule deleted successfully!'})

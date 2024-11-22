@@ -43,10 +43,11 @@ INSTALLED_APPS = [
     'dashboard',
     'accountsAdmin.employeeSchedule',
     'accountsAdmin.User',
-    'accountsCashier.Order',
-    'accountsCashier.Reservation',
-    'accountsCashier.Menu',
-    'accountsCashier.Payment'
+
+    #'accountsCashier.Order',
+    #'accountsCashier.Reservation',
+    #'accountsCashier.Menu',
+    #'accountsCashier.Payment'
 ]
 
 MIDDLEWARE = [
