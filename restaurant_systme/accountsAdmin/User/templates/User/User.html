@@ -123,15 +123,17 @@
         }
 
         .account-section {
-            position: relative;
-            margin-top: 250px;
+            position: fixed;
+            bottom: 0;
+            width: 205px;
             cursor: pointer;
+            margin-bottom: 20px;
         }
 
         .account-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 30px;
             padding: 10px;
             border-radius: 4px;
         }
@@ -150,7 +152,7 @@
         .dropdown {
             display: none;
             position: absolute;
-            top: -80px;
+            top: -60px;
             left: 0;
             background-color: #444;
             width: 100%;
@@ -391,23 +393,26 @@
 <body>
     <div class="sidebar">
         <div class="logo">
-            <a href="{% url 'dashboard' %}">
+            <a href="{% url 'dashboard_view' %}">
                 <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
             </a>
             <div class="logo-text">
                 DilaoRant RMS
             </div>
         </div>
+
         <div style="margin-top: 30px;">
-            <a href="{% url 'dashboard' %}" class="menu-item">
+
+            <a href="{% url 'dashboard_view' %}" class="menu-item">
                 <i class="fas fa-chart-line"></i>
                 Dashboard
             </a>
 
-            <a href="{% url 'employeeSchedule' %}" class="menu-item">
+            <a href="{% url 'employeeSchedule_view' %}" class="menu-item">
                 <i class="fa-regular fa-calendar"></i>
                 Employee Schedule
             </a>
+
             <div class="selected">
                 <a href="{% url 'user_view'%}" class="menu-item">
                     <i class="fa-regular fa-user"></i>
@@ -415,19 +420,43 @@
                 </a>
             </div>
 
-            <div class="account-section">
-                <div class="account-info">
-                    <img src="{% static 'User/user.jpg' %}" alt="User">
-                    <span>{{ user.username }}</span>
-                </div>
-                <div class="dropdown">
-                    <a href="">
-                        <i class="fa-regular fa-user"></i> User Profile
-                    </a>
-                    <a href="{% url 'logout' %}">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                    </a>
-                </div>
+            <!--
+        <a href="" class="menu-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            Reservation
+        </a>
+
+        <a href="" class="menu-item">
+            <i class="fa-regular fa-credit-card"></i>
+            Payment
+        </a>
+        -->
+
+            <a href="{% url 'menu_view' %}" class="menu-item">
+                <i class="fa-solid fa-folder-open"></i>
+                Menu
+            </a>
+
+            <!--
+        <a href="" class="menu-item">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Order
+        </a>
+        -->
+        </div>
+
+        <div class="account-section">
+            <div class="account-info">
+                <img src="{% static 'User/user.jpg' %}" alt="User">
+                <span>{{ user.username }}</span>
+            </div>
+            <div class="dropdown">
+                <a href="">
+                    <i class="fa-regular fa-user"></i> User Profile
+                </a>
+                <a href="{% url 'logout' %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
             </div>
         </div>
     </div>

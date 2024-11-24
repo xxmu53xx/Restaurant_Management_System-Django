@@ -18,7 +18,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Redirect to the dashboard on successful login
+            return redirect('dashboard_view')  # Redirect to the dashboard on successful login
         else:
             messages.error(request, "Invalid username or password")
     return render(request, 'accounts/login.html')

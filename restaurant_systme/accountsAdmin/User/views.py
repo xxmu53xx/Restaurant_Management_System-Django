@@ -21,7 +21,7 @@ def user_view(request):
             }
             user_data.append(user_dict)
             
-        return render(request, 'User/UserDisplay.html', {"users": user_data})
+        return render(request, 'User/User.html', {"users": user_data})
 
 @login_required(login_url='login')
 @require_http_methods(["GET"])
