@@ -18,4 +18,5 @@
 
 ## Our Progress: [Google Sheets : Gantt Chart](https://docs.google.com/spreadsheets/d/1nHaQQXiKmNXLnb4BZy2EdwC_1RaD1d1SZMbM3q2Jwzk/edit?gid=0#gid=0)
 
+## Functional Requirements: [Google Sheets : Functional Requirements](https://cebuinstituteoftechnology-my.sharepoint.com/:w:/r/personal/drewadrein_odilao_cit_edu/_layouts/15/doc2.aspx?sourcedoc=%7BFB0D4748-24E2-4B84-B32B-41B53BE31011%7D&file=Restaurant_Management_System_Proposal.docx&action=default&mobileredirect=true)
 </div>
