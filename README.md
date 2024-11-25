@@ -16,6 +16,6 @@
 
 ----------
 
-## Our Progress: [Google Sheets : Gantt Chart]([[https://trello.com/b/5qpYsdJQ/foundit](https://docs.google.com/spreadsheets/d/1nHaQQXiKmNXLnb4BZy2EdwC_1RaD1d1SZMbM3q2Jwzk/edit?gid=0#gid=0)](https://docs.google.com/spreadsheets/d/1nHaQQXiKmNXLnb4BZy2EdwC_1RaD1d1SZMbM3q2Jwzk/edit?gid=0#gid=0))
+## Our Progress: [Google Sheets : Gantt Chart](https://docs.google.com/spreadsheets/d/1nHaQQXiKmNXLnb4BZy2EdwC_1RaD1d1SZMbM3q2Jwzk/edit?gid=0#gid=0)
 
 </div>
