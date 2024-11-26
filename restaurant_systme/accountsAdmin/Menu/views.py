@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
 from .models import Menu
+import logging
 
 @login_required(login_url='login')
 def menu_view(request):
@@ -45,22 +46,23 @@ def add_menu(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
+logger = logging.getLogger(__name__)
+
 @login_required(login_url='login')
 @require_http_methods(["DELETE"])
 def delete_menu(request, id):
+    logger.info(f"Delete menu request received for id: {id}")
     try:
         menu = get_object_or_404(Menu, id=id)
+        logger.info(f"Found menu item: {menu.name}")
         menu.delete()
+        logger.info(f"Successfully deleted menu item: {menu.name}")
         return JsonResponse({
             'success': True,
             'message': 'Menu item deleted successfully!'
         })
-    except Menu.DoesNotExist:
-        return JsonResponse({
-            'success': False,
-            'message': 'Menu item not found.'
-        }, status=404)
     except Exception as e:
+        logger.error(f"Error deleting menu item: {str(e)}")
         return JsonResponse({
             'success': False,
             'message': str(e)
