@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     # accountsAdmin dashboard url
-    path('',views.dashboard_view, name='dashboard_view'),
+    path('',views.dashboard_view, name='dashboard_view')
 ]
