@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 def redirect_login(request):
     return HttpResponseRedirect('/login/')
 
-# login function
+# Login function
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -18,9 +18,15 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('dashboard_view')  # Redirect to the dashboard on successful login
+            
+            # Check the user's permissions
+            if user.is_superuser and user.is_staff:
+                return redirect('dashboard_view')  # Redirect to admin dashboard
+            else:
+                return redirect('cashier_home_view')  # Redirect to cashier home view
         else:
             messages.error(request, "Invalid username or password")
+    
     return render(request, 'accounts/login.html')
 
 # logout function

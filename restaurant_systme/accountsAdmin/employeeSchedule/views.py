@@ -40,6 +40,7 @@ def get_schedule(request, schedule_id):
     schedule = get_object_or_404(EmSchedule, schedule_id=schedule_id)
     return JsonResponse({
         'employee_id': schedule.employee_id,
+        'employee_role': schedule.employee_role,
         'shift_date': schedule.shift_date.strftime('%Y-%m-%d'),
         'shift_time': schedule.shift_time.strftime('%H:%M'),
         'end_time': schedule.end_time.strftime('%H:%M'),

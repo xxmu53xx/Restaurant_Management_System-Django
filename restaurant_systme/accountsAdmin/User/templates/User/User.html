@@ -81,7 +81,7 @@
             padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            width: 125px;
+            width: 300px;
         }
 
         .user-profile {
@@ -302,6 +302,7 @@
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
+            gap: 10px;
         }
 
         .button-container button {
@@ -462,18 +463,18 @@
     </div>
 
     <div class="main-content">
-        <!--Enter functionality here-->
+        <div class="top-bar">
+            <input type="text" class="search-bar" placeholder="Search User...">
+            <button class="add-schedule-btn" onclick="showPopup()"><i class="fas fa-plus"></i>
+                Add User
+            </button>
+        </div>
+        
         <div class="main-content">
-
             <div class="schedule-container">
                 <div class="schedule-header">
-                    <input type="text" class="search-bar" placeholder="Search">
                     <h2 class="schedule-title">User</h2>
-                    <button class="add-schedule-btn" onclick="showPopup()"><i class="fas fa-plus"></i>
-                        Add User
-                    </button>
                 </div>
-
                 <table class="schedule-table">
                     <thead>
                         <tr>
@@ -481,7 +482,7 @@
                             <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Role</th>
+                            <th>User Role</th>
                             <th>Last Login</th>
                             <th>Actions</th>
                         </tr>
@@ -542,7 +543,7 @@
                         <input type="text" id="last_name" name="last_name" required>
                     </div>
                     <div class="input-field">
-                        <label for="role">Role:</label>
+                        <label for="role">User Role:</label>
                         <select id="role" name="role" required>
                             <option value="Cashier">Cashier</option>
                             <option value="Admin">Admin</option>

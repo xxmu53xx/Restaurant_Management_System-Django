@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Order
+from accountsCashier.Order.models import Order
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -8,9 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth.decorators import login_required
 @login_required(login_url='login')
-def display_Order(request):
+def order_view(request):
     orders = Order.objects.all()
-    return render(request, 'Order/OrderDisplay.html', {'orders': orders})
+    return render(request, 'Order/Order.html', {'orders': orders})
 
 
 def add_order(request):

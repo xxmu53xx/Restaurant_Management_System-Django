@@ -371,23 +371,6 @@
             background-color: #ffe8e8;
             color: #f44242;
         }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .charts-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -496,19 +479,19 @@
                 <div class="stat-card-header">
                     <div>
                         <div class="stat-label">Total Menu</div>
-                        <div class="stat-value">120</div>
+                        <div class="stat-value">{{ total_menu }}</div>
                     </div>
                     <div class="stat-icon menu-icon">
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
             </div>
-
+            
             <div class="stat-card">
                 <div class="stat-card-header">
                     <div>
                         <div class="stat-label">Total Staff</div>
-                        <div class="stat-value">100</div>
+                        <div class="stat-value">{{ total_staff }}</div>
                     </div>
                     <div class="stat-icon staff-icon">
                         <i class="fas fa-users"></i>
@@ -584,7 +567,7 @@
                     datasets: [{
                         label: 'Revenue',
                         data: [100, 200, 250, 280, 350, 380, 400, 390, 420],
-                        borderColor: '#4F46E5',
+                        borderColor: '#e63946',
                         tension: 0.4,
                         fill: true,
                         backgroundColor: 'rgba(79, 70, 229, 0.1)'
@@ -604,7 +587,7 @@
                     }
                 }
             });
-
+            
             // Orders Chart
             const ordersCtx = document.getElementById('ordersChart').getContext('2d');
             new Chart(ordersCtx, {
@@ -614,7 +597,7 @@
                     datasets: [{
                         label: 'Orders',
                         data: [200, 450, 850, 500, 750, 250],
-                        backgroundColor: '#4F46E5'
+                        backgroundColor: '#e63946'
                     }]
                 },
                 options: {

@@ -81,7 +81,7 @@
             padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            width: 125px;
+            width: 300px;
         }
 
         .user-profile {
@@ -298,10 +298,50 @@
             font-size: 16px;
         }
 
+        .input-field select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #444;
+            background-color: transparent;
+            color: white;
+            font-size: 16px;
+            appearance: none;
+            /* Removes default browser styling */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position-x: 100%;
+            background-position-y: 50%;
+        }
+
+        .input-field select:focus {
+            outline: none;
+            border-bottom: 1px solid #e63946;
+        }
+
+        .input-field select option {
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        .input-field select optgroup {
+            background-color: #333;
+            color: #aaa;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .input-field select option:hover {
+            background-color: #444;
+        }
+
         .button-container {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
+            gap: 10px;
         }
 
         .button-container button {
@@ -430,26 +470,25 @@
     </div>
 
     <div class="main-content">
-        <!--
         <div class="top-bar">
-            <input type="text" class="search-bar" placeholder="Search">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search Employee..."
+                oninput="performSearch()">
+            <button class="add-schedule-btn" onclick="showAddPopup()">
+                <i class="fas fa-plus"></i>
+                Add Schedule
+            </button>
         </div>
-        -->
         <div class="main-content">
 
             <div class="schedule-container">
                 <div class="schedule-header">
-                    <input type="text" class="search-bar" placeholder="Search">
                     <h2 class="schedule-title">Employee Schedule</h2>
-                    <button class="add-schedule-btn" onclick="showAddPopup()">
-                        <i class="fas fa-plus"></i>
-                        Add Schedule
-                    </button>
                 </div>
                 <table class="schedule-table">
                     <thead>
                         <tr>
                             <th>Employee ID</th>
+                            <th>Employee Role</th>
                             <th>Shift Date</th>
                             <th>Start Time</th>
                             <th>End Time</th>
@@ -460,6 +499,7 @@
                         {% for schedule in schedules %}
                         <tr>
                             <td>{{ schedule.employee_id }}</td>
+                            <td>{{ schedule.get_employee_role_display }}</td>
                             <td>{{ schedule.shift_date }}</td>
                             <td>{{ schedule.shift_time }}</td>
                             <td>{{ schedule.end_time }}</td>
@@ -481,8 +521,8 @@
                             </td>
                         </tr>
                         {% empty %}
-                        <tr>
-                            <td colspan="5" style="text-align: center;">No schedules found.</td>
+                        <tr id="noResultsRow" style="display:none;">
+                            <td colspan="6" style="text-align: center;">No schedules found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -498,6 +538,27 @@
                     <div class="input-field">
                         <label for="id_employee_id">Employee ID:</label>
                         <input type="text" name="employee_id" id="id_employee_id" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="id_employee_role">Employee Role:</label>
+                        <select name="employee_role" id="id_employee_role" required>
+                            <optgroup label="Back-of-house">
+                                <option value="executive_chef">Executive Chef</option>
+                                <option value="kitchen_manager">Kitchen Manager</option>
+                                <option value="sous_chef">Sous Chef</option>
+                                <option value="station_chef">Station Chef</option>
+                                <option value="cook">Cook</option>
+                                <option value="assistant_cook">Assistant Cook</option>
+                                <option value="cleaning_team">Cleaning Team</option>
+                            </optgroup>
+                            <optgroup label="Front-of-house">
+                                <option value="head_waiter">Head Waiter</option>
+                                <option value="receptionist">Receptionist</option>
+                                <option value="sommelier">Sommelier</option>
+                                <option value="bar_staff">Bar Staff</option>
+                                <option value="waiter">Waiter</option>
+                            </optgroup>
+                        </select>
                     </div>
                     <div class="input-field">
                         <label for="id_shift_date">Shift Date:</label>
@@ -560,9 +621,6 @@
                 }
 
                 function update_schedule(schedule_id) {
-                    console.log("Edit clicked for schedule ID:", schedule_id);
-                    currentScheduleId = schedule_id;
-
                     $.ajax({
                         url: "{% url 'get_schedule' 999999 %}".replace('999999', schedule_id),
                         type: 'GET',
@@ -570,14 +628,11 @@
                             'X-CSRFToken': csrftoken
                         },
                         success: function (data) {
-
                             document.getElementById('id_schedule_id').value = schedule_id;
-
-
                             const formattedDate = formatDateForInput(data.shift_date);
 
-
                             document.getElementById('id_employee_id').value = data.employee_id;
+                            document.getElementById('id_employee_role').value = data.employee_role;
                             document.getElementById('id_shift_date').value = formattedDate;
                             document.getElementById('id_shift_time').value = data.shift_time;
                             document.getElementById('id_end_time').value = data.end_time;
@@ -642,6 +697,34 @@
                                 alert('Error deleting the schedule. Please try again.');
                             }
                         });
+                    }
+                }
+
+                function performSearch() {
+                    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+                    const rows = document.querySelectorAll('.schedule-table tbody tr');
+                    let visibleRowCount = 0;
+
+                    rows.forEach(row => {
+                        const cellsText = Array.from(row.getElementsByTagName('td'))
+                            .map(cell => cell.textContent.toLowerCase())
+                            .join(' ');
+
+                        if (searchTerm === '' || cellsText.includes(searchTerm)) {
+                            row.style.display = '';
+                            visibleRowCount++;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    const noResultsRow = document.getElementById('noResultsRow');
+                    if (noResultsRow) {
+                        if (visibleRowCount === 0) {
+                            noResultsRow.style.display = '';
+                        } else {
+                            noResultsRow.style.display = 'none';
+                        }
                     }
                 }
             </script>

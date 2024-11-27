@@ -24,13 +24,17 @@ urlpatterns = [
     # accounts url
     path('',include("accounts.urls")),
 
-    # accountsAdmin dashboard url
+    # admin urls
     path('ad/Dashboard', include('dashboard.urls')),
 
     path('ad/employeeSchedule', include('accountsAdmin.employeeSchedule.urls')),
     path('ad/User', include('accountsAdmin.User.urls')),
     path('ad/Menu', include('accountsAdmin.Menu.urls')),
-    #path('ad/Order', include('accountsAdmin.Order.urls')),
+
+    # cashier urls
+    path('cash/Cashier_home', include('cashier_home.urls')),
+
+    path('cash/Order', include('accountsCashier.Order.urls'))
     #path('ad/Payment', include('accountsAdmin.Payment.urls')),
     #path('ad/Reservation', include('accountsAdmin.Reservation.urls'))
 ]

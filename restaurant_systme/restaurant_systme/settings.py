@@ -39,12 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    # accounts apps
     'accounts',
+
+    # admin apps
     'dashboard',
+
     'accountsAdmin.employeeSchedule',
     'accountsAdmin.User',
-    'accountsAdmin.Menu'
-    #'accountsAdmin.Order',
+    'accountsAdmin.Menu',
+
+    # cashier apps
+    'cashier_home',
+
+    'accountsCashier.Order'
     #'accountsAdmin.Reservation',
     #'accountsAdmin.Payment'
 ]
