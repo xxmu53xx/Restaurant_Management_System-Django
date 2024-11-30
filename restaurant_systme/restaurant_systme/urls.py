@@ -34,7 +34,6 @@ urlpatterns = [
     # cashier urls
     path('cash/Cashier_home', include('cashier_home.urls')),
 
-    path('cash/Order', include('accountsCashier.Order.urls'))
-    #path('ad/Payment', include('accountsAdmin.Payment.urls')),
-    #path('ad/Reservation', include('accountsAdmin.Reservation.urls'))
+    path('cash/Payment', include('accountsCashier.Payment.urls')),
+    path('cash/Reservation', include('accountsCashier.Reservation.urls'))
 ]

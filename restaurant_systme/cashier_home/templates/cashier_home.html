@@ -1,232 +1,893 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Dashboard</title>
+    <title>Restaurant Management</title>
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400&display=swap');
+
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Sidebar */
         .sidebar {
-            width: 80px;
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 0;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar img {
-            width: 40px;
-            margin: 20px 0;
-            cursor: pointer;
-        }
-
-        .sidebar img:hover {
-            opacity: 0.8;
-        }
-
-        /* Main Content */
-        .main {
-            flex: 1;
+            width: 250px;
+            background-color: #333;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            color: white;
             padding: 20px;
         }
 
-        .header {
+        .logo {
+            align-items: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            /* Ensures margin auto works */
+        }
+
+        .logo-text {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            margin-right: 330px;
+            padding: 20px;
+            background-color: #f4f5f9;
+            min-height: 80vh;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            margin-right: 20px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section h2 {
+            color: #e63946;
+            font-size: 2em;
+        }
+
+        .search-bar {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification {
+            background-color: #e63946;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #444;
+            border-radius: 4px;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+        }
+
+        .selected {
+            background-color: #e63946;
+            border-radius: 4px;
+        }
+
+        .account-section {
+            position: fixed;
+            bottom: 0;
+            width: 205px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .account-info img {
+            width: 55px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .account-info span {
+            font-size: 16px;
+            color: #f1faee;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: -60px;
+            left: 0;
+            background-color: #444;
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+        .dropdown i {
+            margin-right: 8px;
+        }
+
+        .account-section:hover .dropdown {
+            display: block;
+        }
+
+        .schedule-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-left: -250px;
+        }
+
+        .schedule-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .categories {
-            display: flex;
-            gap: 10px;
+        .schedule-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 auto;
         }
 
-        .categories button {
-            padding: 10px 15px;
-            border: none;
-            background-color: #f1f1f1;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .categories button:hover {
-            background-color: #ff6347;
+        .add-schedule-btn {
+            background-color: #e63946;
             color: white;
-        }
-
-        .menu-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .menu-item {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            text-align: center;
-        }
-
-        .menu-item img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .menu-item h4 {
-            margin: 0 0 10px 0;
-        }
-
-        .menu-item p {
-            margin: 0;
-            color: #555;
-        }
-
-        /* Detail Section */
-        .detail {
-            width: 300px;
-            background: white;
-            padding: 20px;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .detail h3 {
-            margin: 0 0 20px;
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .detail-item img {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            margin-right: 10px;
-        }
-
-        .detail-total {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-        }
-
-        .payment-method {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .payment-method button {
+            border: none;
             padding: 10px;
-            border: none;
-            border-radius: 20px;
-            background: #f1f1f1;
-            cursor: pointer;
-        }
-
-        .payment-method button:hover {
-            background: #ff6347;
-            color: white;
-        }
-
-        .process-button {
-            width: 100%;
-            background: #ff6347;
-            color: white;
-            padding: 10px;
-            border: none;
             border-radius: 5px;
-            margin-top: 20px;
             cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-schedule-btn i {
+            margin-right: 5px;
+        }
+
+        .schedule-table {
+            width: 100%;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .schedule-table th {
+            background-color: #f4f5f9;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .schedule-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1e1e1e;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .popup-container h2 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .popup-container .welcome-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #aaa;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #444;
+            background-color: transparent;
+            color: white;
             font-size: 16px;
         }
 
-        .process-button:hover {
-            background: #e55337;
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .button-container button {
+            padding: 12px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 50%;
+        }
+
+        .add-button {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #333;
+            color: white;
+        }
+
+
+        .btn-edit {
+            background-color: #0e8225;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .btn-edit:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            transform: translateY(-1px);
+        }
+
+        /* Animation for button click */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-content {
+            padding: 10px;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .menu-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .menu-price {
+            font-size: 1.1em;
+            color: #e63946;
+            font-weight: bold;
+        }
+
+        .menu-description {
+            color: #666;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+
+        .menu-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-available {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-unavailable {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .menu-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Modified popup styles for image upload */
+        .popup-container {
+            width: 500px;
+            max-width: 90%;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #444;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .status-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .status-toggle button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Default appearance for Available button */
+        .status-toggle .status-available {
+            background-color: #4CAF50;
+            color: white;
+            opacity: 0.4;
+        }
+
+        /* Default appearance for Unavailable button */
+        .status-toggle .status-unavailable {
+            background-color: #e63946;
+            color: white;
+            opacity: 0.4;
+        }
+
+        /* Active state for Available button */
+        .status-toggle .status-available.active {
+            opacity: 1;
+            box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+        }
+
+        /* Active state for Unavailable button */
+        .status-toggle .status-unavailable.active {
+            opacity: 1;
+            box-shadow: 0 2px 4px rgba(230, 57, 70, 0.2);
+        }
+
+        /* Hover effects for Available button */
+        .status-toggle .status-available:hover {
+            opacity: 1;
+            /* Slightly brighter on hover */
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+            /* Subtle hover glow */
+        }
+
+        /* Hover effects for Unavailable button */
+        .status-toggle .status-unavailable:hover {
+            opacity: 1;
+            /* Slightly brighter on hover */
+            box-shadow: 0 2px 8px rgba(230, 57, 70, 0.3);
+            /* Subtle hover glow */
+        }
+
+        .order-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            color: white;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #e63946;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .container-section {
+            display: flex;
+            position: relative;
+        }
+
+        .menu-section {
+            flex: 2;
+            overflow-y: auto;
+            max-height: 88.5vh;
+            padding-right: 20px;
+        }
+
+        .order-container {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .order-container h2 {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-list {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            color: white;
+        }
+
+        .order-item-details {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-item-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .order-item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .add-to-order-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .checkout-btn {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .add-to-order-btn:hover {
+            background-color: #45a049;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .quantity-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .quantity-btn:hover {
+            background-color: #555;
+        }
+
+        .quantity {
+            font-size: 0.9em;
+        }
+
+        .order-item-name {
+            font-weight: bold;
+        }
+
+        .order-item-price {
+            font-weight: bold;
+        }
+
+        .add-to-order-btn:disabled {
+            background-color: #888 !important;
+            cursor: not-allowed;
         }
     </style>
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <img src="menu-icon.png" alt="Menu">
-            <img src="categories-icon.png" alt="Categories">
-            <img src="orders-icon.png" alt="Orders">
-            <img src="profile-icon.png" alt="Profile">
-        </div>
-
-        <!-- Main Content -->
-        <div class="main">
-            <div class="header">
-                <h2>Categories</h2>
-                <input type="text" placeholder="Search menu...">
-            </div>
-
-            <div class="categories">
-                <button>All Menu</button>
-                <button>Coffee</button>
-                <button>Tea</button>
-                <button>Mocktail</button>
-                <button>Rice</button>
-                <button>Pasta</button>
-                <button>Burger</button>
-            </div>
-
-            <div class="menu-items">
-                <div class="menu-item">
-                    <img src="coffee.jpg" alt="Coffee Latte">
-                    <h4>Coffee Latte</h4>
-                    <p>$21.20 / Portion</p>
-                </div>
-                <div class="menu-item">
-                    <img src="spaghetti.jpg" alt="Bolognese Spaghetti">
-                    <h4>Bolognese Spaghetti</h4>
-                    <p>$21.20 / Portion</p>
-                </div>
-                <!-- Add more items as needed -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            <div class="logo-text">
+                DilaoRant RMS
             </div>
         </div>
+        <div style="margin-top: 30px;">
+            <div class="selected">
+                <a href="" class="menu-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Home
+                </a>
+            </div>
+            
+            <a href="{% url 'payment_view' %}" class="menu-item">
+                <i class="fa-regular fa-credit-card"></i>
+                Payment
+            </a>
 
-        <!-- Detail Section -->
-        <div class="detail">
-            <h3>Detail Items</h3>
-            <div class="detail-item">
-                <div>
-                    <img src="coffee.jpg" alt="Coffee Latte">
-                    <p>Coffee Latte</p>
+            <a href="{% url 'reservation_view' %}" class="menu-item">
+                <i class="fa-solid fa-calendar-check"></i>
+                Reservation
+            </a>
+
+            <div class="account-section">
+                <div class="account-info">
+                    <img src="{% static 'User/user.jpg' %}" alt="User">
+                    <span>{{ user.username }}</span>
                 </div>
-                <p>$21.20</p>
+                <div class="dropdown">
+                    <a href="">
+                        <i class="fa-regular fa-user"></i> User Profile
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </a>
+                </div>
             </div>
-            <div class="detail-total">
-                <p>Total: <strong>$116.95</strong></p>
-            </div>
-            <div class="payment-method">
-                <button>Cash</button>
-                <button>Debit</button>
-                <button>QRIS</button>
-            </div>
-            <button class="process-button">Process Transaction</button>
         </div>
     </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <input type="text" class="search-bar" placeholder="Search Menu Item...">
+        </div>
+        <div class="container-section">
+            <!-- Menu Section -->
+            <div class="menu-section">
+                <div class="menu-grid">
+                    {% for menu in menus %}
+                    <div class="menu-card" data-menu-id="{{ menu.id }}">
+                        <img src="{{ menu.image_url|default:'{% static " placeholder-food.jpg" %}' }}"
+                            alt="{{ menu.name }}" class="menu-image">
+                        <div class="menu-content">
+                            <div class="menu-header">
+                                <h3 class="menu-title">{{ menu.name }}</h3>
+                                <span class="menu-price">${{ menu.price }}</span>
+                            </div>
+                            <p class="menu-description">{{ menu.description }}</p>
+                            <span
+                                class="menu-status {% if menu.status %}status-available{% else %}status-unavailable{% endif %}">
+                                {{ menu.status|yesno:"Available,Not Available" }}
+                            </span>
+                            <button class="add-to-order-btn" data-id="{{ menu.id }}" data-name="{{ menu.name }}"
+                                data-price="{{ menu.price }}">
+                                Add to Order
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Order Container -->
+            <div class="order-container">
+                <h2>Current Order</h2>
+                <div class="order-list" id="order-list">
+                    <!-- Order items will be dynamically added here -->
+                </div>
+                <div class="order-total">
+                    <span>Total</span>
+                    <span id="order-total-price">$0.00</span>
+                </div>
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const orderList = document.getElementById('order-list');
+            const orderTotalPrice = document.getElementById('order-total-price');
+            const orderItems = {};
+
+            // Disable Add to Order buttons for unavailable items
+            document.querySelectorAll('.menu-card').forEach(card => {
+                const addToOrderBtn = card.querySelector('.add-to-order-btn');
+                const statusSpan = card.querySelector('.menu-status');
+
+                if (statusSpan.textContent.trim() === 'Not Available') {
+                    addToOrderBtn.disabled = true;
+                    addToOrderBtn.style.backgroundColor = '#888';
+                    addToOrderBtn.style.cursor = 'not-allowed';
+                }
+            });
+
+            // Add to Order functionality
+            document.querySelectorAll('.add-to-order-btn:not([disabled])').forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+                    const imageUrl = this.closest('.menu-card').querySelector('.menu-image').src;
+
+                    if (orderItems[id]) {
+                        orderItems[id].quantity++;
+                    } else {
+                        orderItems[id] = {
+                            name: name,
+                            price: price,
+                            quantity: 1,
+                            imageUrl: imageUrl
+                        };
+                    }
+                    updateOrderList();
+                });
+            });
+
+            // Search functionality
+            document.querySelector('.search-bar').addEventListener('input', function (e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const menuCards = document.querySelectorAll('.menu-card');
+
+                menuCards.forEach(card => {
+                    const menuName = card.querySelector('.menu-title').textContent.toLowerCase();
+                    const menuDescription = card.querySelector('.menu-description').textContent.toLowerCase();
+
+                    if (menuName.includes(searchTerm) || menuDescription.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            function updateOrderList() {
+                orderList.innerHTML = '';
+                let total = 0;
+
+                for (const [id, item] of Object.entries(orderItems)) {
+                    const orderItemElement = document.createElement('div');
+                    orderItemElement.classList.add('order-item');
+                    orderItemElement.innerHTML = `
+                    <div class="order-item-details">
+                        <img src="${item.imageUrl}" alt="${item.name}" class="order-item-image">
+                        <div class="order-item-text">
+                            <span class="order-item-name">${item.name}</span>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus" data-id="${id}">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn plus" data-id="${id}">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                `;
+                    orderList.appendChild(orderItemElement);
+                    total += item.price * item.quantity;
+                }
+
+                orderTotalPrice.textContent = `$${total.toFixed(2)}`;
+
+                // Add event listeners for quantity control
+                document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const id = this.dataset.id;
+                        if (orderItems[id].quantity > 1) {
+                            orderItems[id].quantity--;
+                        } else {
+                            delete orderItems[id];
+                        }
+                        updateOrderList();
+                    });
+                });
+
+                document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const id = this.dataset.id;
+                        orderItems[id].quantity++;
+                        updateOrderList();
+                    });
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
