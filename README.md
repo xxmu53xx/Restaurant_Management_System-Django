@@ -107,9 +107,6 @@ Below are the required tools and steps to install them for running the software.
 
 5. **Install Dependencies**
    ```bash
-   pip install openpyxl
-   pip install pillow
-   pip install -r requirements.txt
    ```
 
 6. **Migrate the Database**
