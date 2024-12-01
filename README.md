@@ -9,9 +9,38 @@
 ---
 
 # Table Of Contents 
-[Introduction](#introduction)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Our Gantt Chart](#our-gantt-chart)
+- [Entity Relations Diagram (ERD)](#entity-relations-diagram-erd)
+- [UI/UX Design](#uiux-design)
+- [Contributors](#contributors)
 
 ---
 
 #  Introduction 
 
+---
+
+# Features
+
+---
+
+# Getting Started
+
+---
+
+# Our Gantt Chart
+
+---
+
+# Entity Relations Diagram (ERD)
+
+--- 
+
+# UI/UX Design
+
+---
+
+# Contributors
