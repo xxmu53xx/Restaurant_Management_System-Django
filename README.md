@@ -3,5 +3,14 @@
 </p>
 
 <p align="center">
-  *"DilaoRant is a Restaurant Management System designed to optimize daily restaurant operations by providing a comprehensive platform that supports user authentication, order management, inventory tracking, employee scheduling, and data security to enhance efficiency and customer satisfaction."*
+  _"DilaoRant is a Restaurant Management System designed to optimize daily restaurant operations by providing a comprehensive platform that supports user authentication, order management, inventory tracking, employee scheduling, and data security to enhance efficiency and customer satisfaction._
 </p>
+
+---
+
+# ** Table Of Contents **
+[Introduction](#introduction)
+---
+
+# ** Introduction **
+
