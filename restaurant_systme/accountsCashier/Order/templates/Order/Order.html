@@ -1,0 +1,1046 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            color: white;
+            padding: 20px;
+        }
+
+        .logo {
+            align-items: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            /* Ensures margin auto works */
+        }
+
+        .logo-text {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #f4f5f9;
+            min-height: 88vh;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section h2 {
+            color: #e63946;
+            font-size: 2em;
+        }
+
+        .search-bar {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification {
+            background-color: #e63946;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #444;
+            border-radius: 4px;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+        }
+
+        .selected {
+            background-color: #e63946;
+            border-radius: 4px;
+        }
+
+        .account-section {
+            position: fixed;
+            bottom: 0;
+            width: 205px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .account-info img {
+            width: 55px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .account-info span {
+            font-size: 16px;
+            color: #f1faee;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: -60px;
+            left: 0;
+            background-color: #444;
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+        .dropdown i {
+            margin-right: 8px;
+        }
+
+        .account-section:hover .dropdown {
+            display: block;
+        }
+
+        .schedule-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-left: -250px;
+            max-height: 760px;
+            overflow-y: auto;
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .schedule-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 auto;
+        }
+
+        .add-schedule-btn {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-schedule-btn i {
+            margin-right: 5px;
+        }
+
+        .schedule-table {
+            width: 100%;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .schedule-table th {
+            background-color: #f4f5f9;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .schedule-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1e1e1e;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .popup-container h2 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .popup-container .welcome-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #aaa;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #444;
+            background-color: transparent;
+            color: white;
+            font-size: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .button-container button {
+            padding: 12px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 50%;
+        }
+
+        .add-button {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .add-button:hover {
+            background-color: #ff0015;
+            transform: translateY(-1px);
+        }
+
+        .cancel-button {
+            background-color: #333;
+            color: white;
+        }
+
+        .cancel-button:hover {
+            background-color: #454444;
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            background-color: #0e8225;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-edit:hover {
+            background-color: #20bd28;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: #ff0000;
+            transform: translateY(-1px);
+        }
+
+        /* Animation for button click */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+
+
+
+
+        /* PROFILE MODAL */
+
+        .profile-container-1 {
+            max-width: 820px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-header-1 {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            background-image: url("{% static 'dashboard/bg.jpg' %}");
+        }
+
+        .profile-header-1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-avatar-1 {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            z-index: 1;
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .profile-form-1 {
+            padding: 30px;
+        }
+
+        .form-group-1 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group-1 label {
+            width: 150px;
+            font-weight: 500;
+        }
+
+        .form-group-1 input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #e6e3e3;
+            border-radius: 4px;
+        }
+
+        .form-group-1 input:disabled {
+            background-color: #e8e6e6;
+            color: #666;
+        }
+
+        .edit-toggle-1 {
+            margin-left: 10px;
+            color: #e63946;
+            cursor: pointer;
+        }
+
+        .edit-toggle-1:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-actions-1 {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-1 {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary-1 {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .btn-primary-1:hover {
+            background-color: #ff0015;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary-1 {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary-1:hover {
+            background-color: #dddddd;
+            transform: translateY(-1px);
+        }
+
+        .modal-1 {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content-1 {
+            background-color: #fefefe;
+            margin: 15% auto;
+            border-radius: 8px;
+            max-width: 820px;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .modal-close-1 {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close-1:hover,
+        .modal-close-1:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <a href="{% url 'cashier_home_view' %}">
+                <img src="{% static 'accounts/bg3.png' %}" alt="DilaoRant Logo">
+            </a>
+            <div class="logo-text">
+                DilaoRant RMS
+            </div>
+        </div>
+        <div style="margin-top: 30px;">
+            <a href="{% url 'cashier_home_view' %}" class="menu-item">
+                <i class="fas fa-house-user"></i> <!-- Home icon updated to house icon -->
+                Home
+            </a>
+        
+            <div class="selected">
+                <a href="{% url 'order_view' %}" class="menu-item">
+                    <i class="fas fa-box"></i> <!-- Order icon updated to box icon -->
+                    Order
+                </a>
+            </div>
+        
+            <a href="{% url 'payment_view' %}" class="menu-item">
+                <i class="fas fa-credit-card"></i> <!-- Payment icon updated to credit card icon -->
+                Payment
+            </a>
+        
+            <a href="{% url 'reservation_view' %}" class="menu-item">
+                <i class="fas fa-calendar-alt"></i> <!-- Reservation icon updated to calendar icon -->
+                Reservation
+            </a>
+
+            <div class="account-section">
+                <div class="account-info">
+                    <img src="{% static 'User/user.jpg' %}" alt="User">
+                    <span>{{ user.username }}</span>
+                </div>
+                <div class="dropdown">
+                    <a href="">
+                        <i class="fa-regular fa-user"></i> User Profile
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search Order..."
+                onkeyup="performSearch()">
+        </div>
+        <div class="main-content">
+
+            <!-- Enter functionality here -->
+            <div class="schedule-container">
+                <div class="schedule-header">
+                    <h2 class="schedule-title">Order</h2>
+                </div>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Total Price</th>
+                            <th>Total Order</th>
+                            <th>Order Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.order_id }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>${{ order.total_amount }}</td>
+                            <td>{{ order.total_items }}</td>
+                            <td>{{ order.order_date|date:"M d, Y h:i A" }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-edit btn-tooltip"
+                                        onclick="showEditPopup('{{ order.order_id }}', '{{ order.customer_name }}', '{{ order.total_amount }}', '{{ order.total_items }}')"
+                                        data-tooltip="Edit Order">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-delete btn-tooltip"
+                                        onclick="delete_order('{{ order.order_id }}')" data-tooltip="Delete Order">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No orders found.</td>
+                        </tr>
+                        {% endfor %}
+                        <tr id="noResultsRow" style="display: none;">
+                            <td colspan="4" style="text-align: center;">No results found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Popup Container -->
+        <div class="overlay" id="overlay" style="display: none;"></div>
+        <div class="popup-container" id="popupContainer" style="display: none;">
+            <h2 id="popupTitle">Add Order</h2>
+            <form id="orderForm">
+                {% csrf_token %}
+                <div class="input-field">
+                    <label for="customer_name">Customer Name:</label>
+                    <input type="text" name="customer_name" id="customer_name" required>
+                </div>
+                <div class="input-field">
+                    <label for="total_amount">Total Price:</label>
+                    <input type="number" name="total_amount" id="total_amount" step="0.01" min="0" required>
+                </div>
+                <div class="input-field">
+                    <label for="total_items">Total Order:</label>
+                    <input type="number" name="total_items" id="total_items" min="1" required>
+                </div>
+                <input type="hidden" id="order_id">
+                <div class="button-container">
+                    <button type="submit" class="add-button">Add Order</button>
+                    <button type="button" class="cancel-button" onclick="hidePopup()">Cancel</button>
+                </div>
+                <div id="messages"></div>
+            </form>
+        </div>
+
+
+        <!-- PROFILE MODAL -->
+        <div id="profileModal-1" class="modal-1">
+            <div class="modal-content-1">
+                <span class="modal-close-1">&times;</span>
+
+                <div class="profile-container-1">
+                    <div class="profile-header-1">
+                        <img src="{% static 'dashboard/user.jpg' %}" alt="Profile Avatar" class="profile-avatar-1">
+                        <div class="profile-info-1">
+                            <h2>{{ user.username }}</h2>
+                        </div>
+                    </div>
+
+                    <form id="profileEditForm-1" class="profile-form-1">
+                        {% csrf_token %}
+                        <div class="form-group-1">
+                            <label for="username-1">Username</label>
+                            <input type="text" id="username-1" name="username" value="{{ user.username }}">
+                            <span class="edit-toggle-1" data-field="username-1">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </div>
+
+                        <div class="form-group-1">
+                            <label for="firstName-1">First Name</label>
+                            <input type="text" id="firstName-1" name="first_name" value="{{ user.first_name }}"
+                                disabled>
+                            <span class="edit-toggle-1" data-field="firstName-1">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </div>
+
+                        <div class="form-group-1">
+                            <label for="lastName-1">Last Name</label>
+                            <input type="text" id="lastName-1" name="last_name" value="{{ user.last_name }}" disabled>
+                            <span class="edit-toggle-1" data-field="lastName-1">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </div>
+
+                        <div class="form-group-1">
+                            <label for="email-1">Email</label>
+                            <input type="email" id="email-1" name="email" value="{{ user.email }}" disabled>
+                            <span class="edit-toggle-1" data-field="email-1">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </div>
+
+                        <div class="form-group-1">
+                            <label>Current Role</label>
+                            <input type="text" id="currentRole-1" value="Loading..." disabled
+                                style="margin-right: 25px;">
+                        </div>
+
+                        <div class="profile-actions-1">
+                            <button type="button" class="btn-1 btn-secondary-1" id="cancelBtn-1">Cancel</button>
+                            <button type="button" class="btn-1 btn-primary-1" id="saveBtn-1">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            const csrftoken = '{{ csrf_token }}';
+            let isEditing = false;
+            let currentOrderId = null;
+
+            // Show Add Order Popup
+            function showAddPopup() {
+                isEditing = false;
+                currentOrderId = null;
+                document.getElementById('popupTitle').innerText = 'Add Order';
+                document.getElementById('orderForm').reset();
+                document.getElementById('order_id').value = '';
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('popupContainer').style.display = 'block';
+                document.getElementById('messages').innerHTML = '';
+            }
+
+            // Show Edit Order Popup
+            function showEditPopup(orderId, customerName, totalAmount, totalItems) {
+                isEditing = true;
+                currentOrderId = orderId;
+                document.getElementById('popupTitle').innerText = 'Edit Order';
+                document.getElementById('customer_name').value = customerName;
+                document.getElementById('total_amount').value = totalAmount;
+                document.getElementById('total_items').value = totalItems;
+                document.getElementById('order_id').value = orderId;
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('popupContainer').style.display = 'block';
+                document.getElementById('messages').innerHTML = '';
+            }
+
+            // Hide Popup
+            function hidePopup() {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('popupContainer').style.display = 'none';
+                document.getElementById('orderForm').reset();
+                document.getElementById('messages').innerHTML = '';
+                isEditing = false;
+                currentOrderId = null;
+            }
+
+            // Edit Order
+            $('#orderForm').on('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                // Determine the correct URL for update_order, regardless of whether it's adding or editing
+                let url = "{% url 'update_order' 999999 %}".replace('999999', currentOrderId || 'new'); // Handle 'new' if it's a new order
+                if (currentOrderId) {
+                    formData.append('order_id', currentOrderId);  // Only append order_id if it's an existing order
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    success: function (response) {
+                        alert('Order successfully saved!');
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        const errorMessages = xhr.responseJSON?.errors || ['An error occurred. Please try again.'];
+                        const messageDiv = document.getElementById('messages');
+                        messageDiv.innerHTML = errorMessages.map(msg => `<p>${msg}</p>`).join('');
+                    }
+                });
+            });
+
+            // Delete Order
+            function delete_order(orderId) {
+                if (confirm("Are you sure you want to delete this order?")) {
+                    $.ajax({
+                        url: "{% url 'delete_order' 999999 %}".replace('999999', orderId),
+                        type: 'DELETE',  // Correct HTTP method
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        success: function (response) {
+                            alert('Order successfully deleted!');
+                            window.location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error deleting order:', error);
+                            alert('Error deleting the order. Please try again.');
+                        }
+                    });
+                }
+            }
+
+            // Advanced Search Functionality
+            function performSearch() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+                const rows = document.querySelectorAll('.schedule-table tbody tr:not(#noResultsRow)'); // Exclude noResultsRow
+                let visibleRowCount = 0;
+
+                rows.forEach(row => {
+                    const cellsText = Array.from(row.getElementsByTagName('td'))
+                        .slice(0, -1) // Exclude the last cell (Actions column)
+                        .map(cell => cell.textContent.toLowerCase())  // Get the text content of each cell
+                        .join(' ');  // Join all the cell text content to make searching easier
+
+                    // If the search term matches any part of the row, show it
+                    if (searchTerm === '' || cellsText.includes(searchTerm)) {
+                        row.style.display = ''; // Show the row
+                        visibleRowCount++;
+                    } else {
+                        row.style.display = 'none'; // Hide the row
+                    }
+                });
+
+                const noResultsRow = document.getElementById('noResultsRow');
+                // Display "No results" row if no rows are visible
+                if (noResultsRow) {
+                    if (visibleRowCount === 0) {
+                        noResultsRow.style.display = '';  // Show the "No results found" row
+                    } else {
+                        noResultsRow.style.display = 'none';  // Hide it if there are visible rows
+                    }
+                }
+            }
+
+
+
+
+            // PROFILE MODAL
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const modal = document.getElementById('profileModal-1');
+                const userProfileLink = document.querySelector('.dropdown a[href=""]');
+                const closeBtn = document.querySelector('.modal-close-1');
+                const cancelBtn = document.getElementById('cancelBtn-1');
+                const saveBtn = document.getElementById('saveBtn-1');
+                const form = document.getElementById('profileEditForm-1');
+
+                // Function to open modal
+                function openModal() {
+                    modal.style.display = 'flex';
+                    resetForm();
+                    fetchUserRole();
+                }
+
+                // Function to close modal
+                function closeModal() {
+                    modal.style.display = 'none';
+                }
+
+                // Function to reset form to original state
+                function resetForm() {
+                    const inputs = document.querySelectorAll('#profileEditForm-1 input');
+                    inputs.forEach(input => {
+                        input.value = input.getAttribute('data-original');
+                        input.disabled = true;
+
+                        const toggle = input.nextElementSibling;
+                        if (toggle && toggle.classList.contains('edit-toggle-1')) {
+                            const icon = toggle.querySelector('i');
+                            icon.classList.remove('fa-check');
+                            icon.classList.add('fa-edit');
+                        }
+                    });
+                }
+
+                // Fetch user role and update it in the modal
+                function fetchUserRole() {
+                    const roleField = document.getElementById('currentRole-1');
+
+                    roleField.value = "Loading...";
+
+                    $.ajax({
+                        url: "{% url 'get_user_role' %}",
+                        method: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                roleField.value = data.role;
+                                roleField.disabled = true;
+                            } else {
+                                console.error('Error fetching role:', data.message);
+                                roleField.value = "Error loading role";
+                            }
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                            roleField.value = "Error loading role";
+                        }
+                    });
+                }
+
+                // Open modal when User Profile is clicked
+                userProfileLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+
+                // Close modal when close button is clicked
+                closeBtn.addEventListener('click', closeModal);
+
+                // Close modal when cancel button is clicked
+                cancelBtn.addEventListener('click', () => {
+                    resetForm();
+                    closeModal();
+                });
+
+                // Close modal if clicked outside of the modal content
+                window.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        resetForm();
+                        closeModal();
+                    }
+                });
+
+                // Add original values as data attributes for reset
+                form.querySelectorAll('input').forEach(input => {
+                    input.setAttribute('data-original', input.value);
+                });
+
+                // Edit toggle handler
+                const editToggles = document.querySelectorAll('.edit-toggle-1');
+                editToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function () {
+                        const field = this.dataset.field;
+                        const input = document.getElementById(field);
+                        input.disabled = !input.disabled;
+
+                        const icon = this.querySelector('i');
+                        if (input.disabled) {
+                            icon.classList.remove('fa-check');
+                            icon.classList.add('fa-edit');
+                            input.value = input.getAttribute('data-original');
+                        } else {
+                            icon.classList.remove('fa-edit');
+                            icon.classList.add('fa-check');
+                        }
+                    });
+                });
+
+                // Save changes via AJAX
+                saveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData();
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+
+                    let hasChanges = false;
+                    const fieldsToCheck = [
+                        { id: 'username-1', name: 'username' },
+                        { id: 'firstName-1', name: 'first_name' },
+                        { id: 'lastName-1', name: 'last_name' },
+                        { id: 'email-1', name: 'email' }
+                    ];
+
+                    fieldsToCheck.forEach(field => {
+                        const input = document.getElementById(field.id);
+                        const originalValue = input.getAttribute('data-original');
+
+                        if (input.value !== originalValue) {
+                            formData.append(field.name, input.value);
+                            hasChanges = true;
+                        }
+                    });
+
+                    if (!hasChanges) {
+                        alert('No changes to save');
+                        return;
+                    }
+
+                    fetch("{% url 'update_profile' %}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'X-CSRFToken': csrfToken }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Profile updated successfully!');
+
+                                window.location.reload();
+                                // Update username and role in the frontend
+                                document.querySelector('.profile-info-1 h2').textContent = data.username;
+                                document.getElementById('currentRole-1').value = data.role;
+
+                                // Close the modal
+                                closeModal();
+                            } else {
+                                alert('Update failed: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred during update');
+                        });
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

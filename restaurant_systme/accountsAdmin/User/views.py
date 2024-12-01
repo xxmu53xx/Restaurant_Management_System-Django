@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm, UserCreateForm
+from restaurant_systme.decorators import admin_required
 
+@admin_required
 @login_required(login_url='login')
 def user_view(request):
     if request.method == "GET":

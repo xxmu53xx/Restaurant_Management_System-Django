@@ -280,97 +280,95 @@
             font-size: 14px;
         }
 
-        /* Charts Container */
-        .charts-container {
+        /* Main container layout */
+        .latest-activities-main {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 30px;
             margin-bottom: 30px;
-        }
-
-        .chart-card {
-            background: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .chart-title {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        /* Orders Table */
-        .orders-table {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .orders-header {
+        /* Sub container layout */
+        .latest-activities-sub {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Latest activity containers */
+        .latest-schedule-container,
+        .latest-user-container,
+        .latest-order-container,
+        .latest-payment-container,
+        .latest-reservation-container,
+        .latest-menu-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Container headers */
+        .latest-schedule-container h3,
+        .latest-user-container h3,
+        .latest-order-container h3,
+        .latest-payment-container h3,
+        .latest-reservation-container h3,
+        .latest-menu-container h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
             margin-bottom: 20px;
         }
 
+        /* Table styles */
         .table-container {
             overflow-x: auto;
         }
 
-        table {
+        .table-container {
             width: 100%;
             border-collapse: collapse;
         }
 
-        th,
-        td {
+        .table-container th,
+        .table-container td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
 
-        th {
+        .table-container th {
             color: #666;
             font-weight: 500;
+            background-color: #f8f9fa;
         }
 
+        .table-container tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Empty state message */
+        .latest-schedule-container p,
+        .latest-user-container p,
+        .latest-order-container p,
+        .latest-payment-container p,
+        .latest-reservation-container p,
+        .latest-menu-container p {
+            color: #666;
+            font-size: 14px;
+            padding: 12px;
+        }
+
+        /* Status badges if needed */
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
         }
 
-        .status-pending {
-            background-color: #fff3e8;
-            color: #f4a142;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .btn-accept {
-            background-color: #e8fff0;
-            color: #42f4a1;
-        }
-
-        .btn-reject {
-            background-color: #ffe8e8;
-            color: #f44242;
-        }
+        /* PROFILE MODAL */
 
         .profile-container-1 {
             max-width: 820px;
@@ -447,6 +445,10 @@
             cursor: pointer;
         }
 
+        .edit-toggle-1:hover {
+            transform: translateY(-5px);
+        }
+
         .profile-actions-1 {
             display: flex;
             justify-content: flex-end;
@@ -466,9 +468,19 @@
             color: white;
         }
 
+        .btn-primary-1:hover {
+            background-color: #ff0015;
+            transform: translateY(-1px);
+        }
+
         .btn-secondary-1 {
             background-color: #f5f5f5;
-            color: #333; 
+            color: #333;
+        }
+
+        .btn-secondary-1:hover {
+            background-color: #dddddd;
+            transform: translateY(-1px);
         }
 
         .modal-1 {
@@ -514,8 +526,6 @@
     </style>
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -532,44 +542,25 @@
         <div style="margin-top: 30px;">
             <div class="selected">
                 <a href="{% url 'dashboard_view' %}" class="menu-item">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-tachometer-alt"></i>
                     Dashboard
                 </a>
             </div>
 
             <a href="{% url 'employeeSchedule_view' %}" class="menu-item">
-                <i class="fa-regular fa-calendar"></i>
+                <i class="fas fa-calendar-day"></i>
                 Employee Schedule
             </a>
 
             <a href="{% url 'user_view' %}" class="menu-item">
-                <i class="fa-regular fa-user"></i>
+                <i class="fas fa-user-cog"></i>
                 User
             </a>
 
-            <!--
-        <a href="" class="menu-item">
-            <i class="fa-solid fa-calendar-check"></i>
-            Reservation
-        </a>
-
-        <a href="" class="menu-item">
-            <i class="fa-regular fa-credit-card"></i>
-            Payment
-        </a>
-        -->
-
             <a href="{% url 'menu_view' %}" class="menu-item">
-                <i class="fa-solid fa-folder-open"></i>
+                <i class="fas fa-utensils"></i>
                 Menu
             </a>
-
-            <!--
-        <a href="" class="menu-item">
-            <i class="fa-solid fa-cart-shopping"></i>
-            Order
-        </a>
-        -->
         </div>
 
         <div class="account-section">
@@ -596,7 +587,7 @@
                 <div class="stat-card-header">
                     <div>
                         <div class="stat-label">Total Revenue</div>
-                        <div class="stat-value">$130,800</div>
+                        <div class="stat-value">${{ total_revenue }}</div>
                     </div>
                     <div class="stat-icon revenue-icon">
                         <i class="fas fa-dollar-sign"></i>
@@ -608,7 +599,7 @@
                 <div class="stat-card-header">
                     <div>
                         <div class="stat-label">Total Orders</div>
-                        <div class="stat-value">11,000</div>
+                        <div class="stat-value">{{ total_order }}</div>
                     </div>
                     <div class="stat-icon orders-icon">
                         <i class="fas fa-shopping-bag"></i>
@@ -641,6 +632,208 @@
             </div>
 
         </div>
+
+        <!-- Main Container -->
+        <div class="latest-activities-main">
+            <!-- Sub Container 1 -->
+            <div class="latest-activities-sub">
+                <div class="latest-schedule-container">
+                    <div class="section-header">
+                        <h3> 📅 Latest Employee Schedule</h3>
+                    </div>
+                    {% if latest_schedule %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Employee Role</th>
+                                <th>Shift Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_schedule.employee_id }}</td>
+                                <td>{{ latest_schedule.get_employee_role_display }}</td>
+                                <td>{{ latest_schedule.shift_date }}</td>
+                                <td>{{ latest_schedule.shift_time }}</td>
+                                <td>{{ latest_schedule.end_time }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No employee schedule found.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Latest Order -->
+                <div class="latest-order-container">
+                    <div class="section-header">
+                        <h3> 🛍️ Latest Order</h3>
+                    </div>
+                    {% if latest_order %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Total Price</th>
+                                <th>Total Items</th>
+                                <th>Order Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_order.order_id }}</td>
+                                <td>{{ latest_order.customer_name }}</td>
+                                <td>${{ latest_order.total_amount|floatformat:2 }}</td>
+                                <td>{{ latest_order.total_items }}</td>
+                                <td>{{ latest_order.order_date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No orders found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sub Container 2 -->
+            <div class="latest-activities-sub">
+                <!-- Latest User -->
+                <div class="latest-user-container">
+                    <div class="section-header">
+                        <h3> 👤 Latest User Activity</h3>
+                    </div>
+                    {% if latest_user %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role</th>
+                                <th>Last Login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_user.id }}</td>
+                                <td>{{ latest_user.username }}</td>
+                                <td>{{ latest_user.first_name }}</td>
+                                <td>{{ latest_user.last_name }}</td>
+                                <td id="user-role">.</td>
+                                <td>{{ latest_user.last_login }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No user activity found.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Latest Menu -->
+                <div class="latest-menu-container">
+                    <div class="section-header">
+                        <h3> 🍽️ Latest Menu</h3>
+                    </div>
+                    {% if latest_menu %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>Menu ID</th>
+                                <th>Menu Name</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_menu.id }}</td>
+                                <td>{{ latest_menu.name }}</td>
+                                <td>{{ latest_menu.status|yesno:"Available,Not Available" }}</td>
+                                <td>${{ latest_menu.price|floatformat:2 }}</td>
+                                <td>{{ latest_menu.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No menu found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sub Container 3 -->
+            <div class="latest-activities-sub">
+                <!-- Latest Reservation -->
+                <div class="latest-reservation-container">
+                    <div class="section-header">
+                        <h3>📝 Latest Reservation</h3>
+                    </div>
+                    {% if latest_reservation %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>Reservation ID</th>
+                                <th>Reservation Name</th>
+                                <th>Reservation Date</th>
+                                <th>Number of People</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_reservation.reservation_id }}</td>
+                                <td>{{ latest_reservation.reservation_name }}</td>
+                                <td>{{ latest_reservation.reservation_date }}</td>
+                                <td>{{ latest_reservation.number_of_people }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No reservation found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sub Container 4 -->
+            <div class="latest-activities-sub">
+                <!-- Latest Payment -->
+                <div class="latest-payment-container">
+                    <div class="section-header">
+                        <h3> 💳 Latest Payment</h3>
+                    </div>
+                    {% if latest_payment %}
+                    <table class="table-container">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Payment Method</th>
+                                <th>Payment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ latest_payment.payment_id }}</td>
+                                <td>{{ latest_payment.order_id }}</td>
+                                <td>{{ latest_payment.customer_name }}</td>
+                                <td>{{ latest_payment.payment_method }}</td>
+                                <td>{{ latest_payment.payment_date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p>No payments found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE MODAL -->
 
         <div id="profileModal-1" class="modal-1">
             <div class="modal-content-1">
@@ -704,63 +897,40 @@
             </div>
         </div>
 
-        <!-- Charts -->
-        <div class="charts-container">
-            <div class="chart-card">
-                <div class="chart-title">Total Revenue</div>
-                <canvas id="revenueChart"></canvas>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title">Total Orders</div>
-                <canvas id="ordersChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Orders Table -->
-        <div class="orders-table">
-            <div class="orders-header">
-                <h2>New Orders</h2>
-                <div class="filter-button">
-                    <i class="fas fa-filter"></i> Filter
-                </div>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Amount</th>
-                            <th>Payment Type</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#87961</td>
-                            <td>Mark Allen</td>
-                            <td>May 25, 2023</td>
-                            <td>10:30 AM</td>
-                            <td>$120</td>
-                            <td>Online</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-accept">Accept</button>
-                                    <button class="btn btn-reject">Reject</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Add more rows as needed -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                function fetchUserRole() {
+                    const roleField = document.getElementById('user-role');
+
+                    // Show initial loading state
+                    roleField.textContent = ".";
+
+                    // AJAX request to fetch user role
+                    $.ajax({
+                        url: "{% url 'get_user_role' %}",
+                        method: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                // Update the table cell with the fetched role
+                                roleField.textContent = data.role;
+                            } else {
+                                console.error('Error fetching role:', data.message);
+                                roleField.textContent = "Error loading role";
+                            }
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                            roleField.textContent = "Error loading role";
+                        }
+                    });
+                }
+
+                fetchUserRole();
+            });
+
+            // PROFILE MODAL
+
             document.addEventListener('DOMContentLoaded', () => {
                 const modal = document.getElementById('profileModal-1');
                 const userProfileLink = document.querySelector('.dropdown a[href=""]');

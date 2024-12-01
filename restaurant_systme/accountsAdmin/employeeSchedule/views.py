@@ -5,7 +5,9 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from accountsAdmin.employeeSchedule.models import EmSchedule
 from accountsAdmin.employeeSchedule.forms import ScheduleForm
+from restaurant_systme.decorators import admin_required
 
+@admin_required
 @login_required(login_url='login')
 @require_http_methods(["GET"])
 def employeeSchedule_view(request):

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class EmSchedule(models.Model):
     ROLE_CHOICES = [
@@ -21,11 +22,11 @@ class EmSchedule(models.Model):
 
     schedule_id = models.AutoField(primary_key=True) 
     employee_id = models.IntegerField() 
-    # Add default value here
     employee_role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='waiter')
     shift_date = models.DateField() 
     shift_time = models.TimeField() 
     end_time = models.TimeField() 
+    created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
         ordering = ['employee_id'] 

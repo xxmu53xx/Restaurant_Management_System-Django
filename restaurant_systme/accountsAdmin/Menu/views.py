@@ -6,7 +6,9 @@ from django.contrib.auth.decorators import login_required
 import json
 from .models import Menu
 import logging
+from restaurant_systme.decorators import admin_required
 
+@admin_required
 @login_required(login_url='login')
 def menu_view(request):
     menus = Menu.objects.all()

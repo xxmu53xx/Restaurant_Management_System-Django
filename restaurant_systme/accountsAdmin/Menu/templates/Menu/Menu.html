@@ -343,6 +343,7 @@
             color: white;
             border: none;
             padding: 10px 15px;
+            width: 100%;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -357,6 +358,7 @@
             color: white;
             border: none;
             padding: 10px 15px;
+            width: 100%;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -377,6 +379,8 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
+            max-height: 800px;
+            overflow-y: auto;
         }
 
         .menu-card {
@@ -428,7 +432,6 @@
         }
 
         .menu-status {
-            display: inline-block;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 0.8em;
@@ -449,6 +452,7 @@
             display: flex;
             gap: 10px;
             margin-top: 15px;
+            justify-content: center;
         }
 
         /* Modified popup styles for image upload */
@@ -532,6 +536,9 @@
             /* Subtle hover glow */
         }
 
+
+        /* PROFILE MODAL */
+
         .profile-container-1 {
             max-width: 820px;
             margin: 0 auto;
@@ -607,6 +614,10 @@
             cursor: pointer;
         }
 
+        .edit-toggle-1:hover {
+            transform: translateY(-5px);
+        }
+
         .profile-actions-1 {
             display: flex;
             justify-content: flex-end;
@@ -626,9 +637,19 @@
             color: white;
         }
 
+        .btn-primary-1:hover {
+            background-color: #ff0015;
+            transform: translateY(-1px);
+        }
+
         .btn-secondary-1 {
             background-color: #f5f5f5;
             color: #333;
+        }
+
+        .btn-secondary-1:hover {
+            background-color: #dddddd;
+            transform: translateY(-1px);
         }
 
         .modal-1 {
@@ -687,48 +708,31 @@
                 DilaoRant RMS
             </div>
         </div>
-        <div style="margin-top: 30px;">
 
+<div style="margin-top: 30px;">
             <a href="{% url 'dashboard_view' %}" class="menu-item">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-tachometer-alt"></i>
                 Dashboard
             </a>
-
+            
             <a href="{% url 'employeeSchedule_view' %}" class="menu-item">
-                <i class="fa-regular fa-calendar"></i>
+                <i class="fas fa-calendar-day"></i>
                 Employee Schedule
             </a>
-
-            <a href="{% url 'user_view'%}" class="menu-item">
-                <i class="fa-regular fa-user"></i>
+            
+            <a href="{% url 'user_view' %}" class="menu-item">
+                <i class="fas fa-user-cog"></i>
                 User
             </a>
-
-            <!--
-            <a href="" class="menu-item">
-                <i class="fa-solid fa-calendar-check"></i>
-                Reservation
-            </a>
-    
-            <a href="" class="menu-item">
-                <i class="fa-regular fa-credit-card"></i>
-                Payment
-            </a>
-            -->
-
+            
             <div class="selected">
                 <a href="{% url 'menu_view' %}" class="menu-item">
-                    <i class="fa-solid fa-folder-open"></i>
+                    <i class="fas fa-utensils"></i>
                     Menu
                 </a>
             </div>
+        </div>
 
-            <!--
-            <a href="" class="menu-item">
-                <i class="fa-solid fa-cart-shopping"></i>
-                Order
-            </a>
-            -->
             <div class="account-section">
                 <div class="account-info">
                     <img src="{% static 'User/user.jpg' %}" alt="User">
@@ -743,7 +747,6 @@
                     </a>
                 </div>
             </div>
-        </div>
     </div>
 
     <div class="main-content">
@@ -836,6 +839,9 @@
             </form>
         </div>
     </div>
+
+    <!-- PROFILE MODAL -->
+
 
     <div id="profileModal-1" class="modal-1">
         <div class="modal-content-1">

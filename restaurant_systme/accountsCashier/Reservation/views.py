@@ -1,92 +1,63 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Reservation
-from .forms import ReservationForm
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from .models import Reservation
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 @login_required(login_url='login')
 def reservation_view(request):
     reservations = Reservation.objects.all()
+    return render(request, 'Reservation/Reservation.html', {'reservations': reservations})
 
-    # Handle POST request (form submission)
-    if request.method == 'POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # Check if the request is AJAX
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                new_reservation = {
-                    'reservation_id': form.instance.reservation_id,
-                    'reservation_date': form.instance.reservation_date.strftime('%Y-%m-%d'),
-                    'number_of_people': form.instance.number_of_people,
-                }
-                return JsonResponse({'success': True, 'reservation': new_reservation})
-            else:
-                messages.success(request, 'Reservation added successfully.')
-                return redirect('displayReservation')
-        else:
-            # Return error response for AJAX
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'message': 'Failed to add reservation. Please check the form for errors.'})
-            else:
-                messages.error(request, 'Failed to add reservation. Please check the form for errors.')
-
-    else:
-        form = ReservationForm()
-
-    # Render the template with the form and reservations
-    return render(request, 'Reservation/Reservation.html', {
-        'form': form,
-        'reservations': reservations,
-    })
-
-
-
+# Add Reservation
+@require_http_methods(["POST"])
 @csrf_exempt
 def add_reservation(request):
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            reservation = form.save()
+        try:
+            reservation = Reservation.objects.create(
+                reservation_name=request.POST.get('reservation_name'),
+                reservation_date=request.POST.get('reservation_date'),
+                number_of_people=request.POST.get('number_of_people')
+            )
             return JsonResponse({
-                'success': True,
-                'reservation': {
-                    'reservation_id': reservation.id,
-                    'reservation_date': reservation.reservation_date,
-                    'number_of_people': reservation.number_of_people
-                },
-                'message': 'Reservation added successfully!'
+                'status': 'success',
+                'message': 'Reservation added successfully',
+                'reservation_id': reservation.reservation_id
             })
-        else:
-            return JsonResponse({'success': False, 'message': 'Form is invalid'})
-    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
 
 @login_required(login_url='login')
-@require_http_methods(["DELETE"])
+@require_http_methods(["POST"])
+def update_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+    
+    if request.method == "POST":
+        reservation_name = request.POST.get('reservation_name')
+        reservation_date = request.POST.get('reservation_date')
+        number_of_people = request.POST.get('number_of_people')
+
+        # Update the reservation
+        reservation.reservation_name = reservation_name
+        reservation.reservation_date = reservation_date
+        reservation.number_of_people = number_of_people
+        reservation.save()
+
+        return JsonResponse({"message": "Reservation updated successfully!"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@login_required(login_url='login')
+@require_http_methods(["POST"])
 def delete_reservation(request, reservation_id):
-    try:
-        reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
-        reservation.delete()
-        return JsonResponse({
-            'success': True,
-            'message': 'a reservation list deleted successfully!'
-        })
-    except Reservation.DoesNotExist:
-        return JsonResponse({
-            'success': False,
-            'message': 'reservation not found.'
-        }, status=404)
-    except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'message': str(e)
-        }, status=500)
+    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+    reservation.delete()
+    return JsonResponse({"message": "Reservation deleted successfully!"})

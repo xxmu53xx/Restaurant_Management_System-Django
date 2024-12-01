@@ -1,33 +1,36 @@
-from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Payment
-from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from cashier_home.models import Payment
 
 @login_required(login_url='login')
 def payment_view(request):
-    payments = Payment.objects.all()  # Fetch all payments to display
+    payments = Payment.objects.all().order_by('-payment_date')  # Fetch all payments to display
     return render(request, 'Payment/Payment.html', {'payments': payments})
 
-def add_payment(request):
+@login_required(login_url='login')
+@require_http_methods(["POST"])
+def update_payment(request, payment_id):
     if request.method == 'POST':
-        payment_id = request.POST.get('payment_id')  # Get the payment_id from the form
+        customer_name = request.POST.get('customer_name')
         payment_method = request.POST.get('payment_method')
-        payment_date = request.POST.get('payment_date')
 
-        # Check if the payment_id already exists
-        if Payment.objects.filter(payment_id=payment_id).exists():
-            return JsonResponse({'success': False, 'message': 'Payment ID already exists.'})
+        # Validate the payment method
+        if payment_method not in dict(Payment.PAYMENT_METHOD_CHOICES):
+            return JsonResponse({'message': 'Invalid payment method'}, status=400)
 
-        # Create and save the new payment
-        payment = Payment(payment_id=payment_id, payment_method=payment_method, payment_date=payment_date)
-        payment.save()
+        try:
+            payment = Payment.objects.get(payment_id=payment_id)
+            payment.customer_name = customer_name
+            payment.payment_method = payment_method
+            payment.payment_date = timezone.now()  # Update the payment date to current time
+            payment.save()
 
-        return JsonResponse({'success': True, 'message': 'Payment added successfully!'})
-
-    return JsonResponse({'success': False, 'message': 'Invalid request'})
+            return JsonResponse({'message': 'Payment updated successfully'})
+        except Payment.DoesNotExist:
+            return JsonResponse({'message': 'Payment not found'}, status=404)
 
 @login_required(login_url='login')
 @require_http_methods(["DELETE"])

@@ -52,8 +52,9 @@ INSTALLED_APPS = [
     # cashier apps
     'cashier_home',
 
-    'accountsCashier.Reservation',
+    'accountsCashier.Order',
     'accountsCashier.Payment',
+    'accountsCashier.Reservation',
 ]
 
 MIDDLEWARE = [

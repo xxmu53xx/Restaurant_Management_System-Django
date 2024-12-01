@@ -4,6 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.payment_view, name='payment_view'),
     
-    path('add/', views.add_payment, name='add_payment'),  # Add this line
-    path('delete_payment/<int:payment_id>/',views.delete_payment,name='delete_payment')
+    path('update_payment/<int:payment_id>/', views.update_payment, name='update_payment'),
+    path('delete_payment/<int:payment_id>/',views.delete_payment,name='delete_payment'),
 ]
