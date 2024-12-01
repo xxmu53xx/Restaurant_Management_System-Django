@@ -12,7 +12,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Functional Requirements)(#Functional-Requirements)
+- [Functional Requirements](#functional-requirements) 
 - [Gantt Chart](#our-gantt-chart)
 - [Entity Relations Diagram (ERD)](#entity-relations-diagram-erd)
 - [UI/UX Design](#uiux-design)
