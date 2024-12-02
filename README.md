@@ -30,6 +30,40 @@
 
 DilaoRant is a comprehensive web application designed to optimize restaurant operations for owners, managers, staff, and customers. It facilitates tasks such as order management, inventory tracking, employee scheduling, and payment processing, while ensuring secure user authentication and robust data protection. This project aims to create an efficient and reliable system that streamlines daily workflows, enhances user experience, and supports the overall growth and success of restaurants.
 
+## 1.1 Purpose
+
+The primary purpose of this document is to define the functional requirements for **DilaoRant: Restaurant Management System**. It serves as a comprehensive guide for the development team and end-users, outlining the system's intended features and user interactions. This document aims to establish a clear and shared understanding of the system's capabilities and limitations prior to the commencement of the development process.
+
+## 1.2 Scope
+
+The Restaurant Management System aims to streamline and optimize the daily operations of restaurants by offering a comprehensive platform tailored to the needs of restaurant owners, managers, staff, and customers. The system's scope includes functionalities such as:
+
+- Secure user authentication
+- Efficient order management
+- Inventory tracking
+- Employee scheduling
+- Robust data security
+
+By addressing these core areas, the system is designed to improve operational efficiency, enhance customer satisfaction, and ensure smooth management of restaurant workflows.
+
+## 1.3 Definitions, Acronyms, and Abbreviations
+
+- **Cashier**: A user responsible for processing customer orders and payments at the point of sale.
+- **Admin**: A user with full access to manage accounts, configurations, and oversee system operations.
+
+---
+
+# 2. Overview
+
+The Restaurant Management System is designed to streamline and optimize the daily operations of restaurants by providing a robust platform for restaurant owners, managers, staff, and customers. This document outlines the functional requirements that define the system’s capabilities, focusing on features such as:
+
+- Order management
+- Inventory tracking
+- Employee scheduling
+- Data security
+
+The system’s ultimate goal is to enhance efficiency, improve user experience, and ensure reliable access to critical operational tools.
+
 ---
 
 ## Features
